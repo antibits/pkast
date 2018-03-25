@@ -1,0 +1,28 @@
+<view class="flex-wrp-row margin-lr">
+  <icon style='padding-right:0.2cm;' type="info"></icon>
+  <picker bindchange="bindPickerChange" value="{{locationIndex}}" range="{{locations}}">
+    <view id="location_selector" class="shadow-text">
+      {{locations[locationIndex]}}
+    </view>
+  </picker>   
+</view>
+<view id="entry" class="flex-wrp-row margin-lr">
+  <view id="user-enter" class="flex-wrp-row">
+  <picker id="num-mult-sel" mode="multiSelector" bindchange="bindMultiPickerChange" value="{{cityCodeIndex}}" range="{{cityCode}}">
+    <view class="car_no_editor">
+      {{cityCode[0][cityCodeIndex[0]]}} {{cityCode[1][cityCodeIndex[1]]}}
+    </view>
+  </picker>
+  <input id="num-edit" type="text" maxlength="5" focus="true" bindblur="bindNumEdit"></input>
+  </view>
+  <button id="contact-btn" bindtap="callowner" size="mini" type="primary">联系车主
+  </button>
+</view>
+<hr/>
+<view class="bbs-header line">
+<view class="bbs-header shadow-text">bbs</view>
+</view>
+<!-- bbs内容 -->
+<block id="bbs" wx:for="{{bbsNews}}" wx:key="*this">
+  <rich-text nodes="{{item}}" bindtap='{{item[0].bindtap}}'/>
+</block>

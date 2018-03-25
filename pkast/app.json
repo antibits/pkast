@@ -1,0 +1,15 @@
+{
+  "pages": [
+    
+    "pages/pkast/pkast",
+    "pages/demo/demo",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "乐区 - 祝您开心愉快每一天!",
+    "navigationBarTextStyle": "black"
+  }
+}
