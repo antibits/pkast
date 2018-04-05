@@ -2,14 +2,16 @@ package com.pkast.user.dao;
 
 import com.pkast.modules.UserInfo;
 import com.pkast.user.mapper.UserMapper;
+import com.pkast.utils.CollectionUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserDao {
-
-    //@Autowired
+    @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
 
     public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
@@ -35,6 +37,7 @@ public class UserDao {
     }
 
     public UserInfo getUserByCarNo(String carNo){
-        return getMapper().getUserByCarNo(carNo);
+        List<UserInfo> userInfos = getMapper().getUserByCarNo(carNo);
+        return CollectionUtil.isEmpty(userInfos)? null : userInfos.get(0);
     }
 }
