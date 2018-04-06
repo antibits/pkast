@@ -1,18 +1,20 @@
 /* pages/pkast/pkast.wxss */
 page {
-  display: block;
-  min-height: 100%;
-  background-color: #e2fae0;
+  height: 100%;
+  display: flex;
+  flex-direction: column; 
+  background-color: rgb(244,247,255);
 }
 
 .shadow-text{
-  text-shadow: 5px 5px 5px #888;
+  text-shadow: 3px 3px 3px #888;
 }
 
 .flex-wrp-row{
   display: flex;
   flex-direction: row;
-  margin-top: 0.2em;
+  margin-top: 1em;
+  align-content: center;
 }
 
 .margin-lr{
@@ -21,12 +23,19 @@ page {
 }
 
 #location_selector{
-  color: #555;
-  
+  color: #576b95;
+  padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+#location-icon{
+  width: 12px;
+  height: 16px;
+  align-self: center;
+  padding:0px 2px 0px 2px;  
 }
 
 #entry{
-  margin-top: 0.5em;
+  margin-top: 1em;
 }
 
 #user-enter{
@@ -34,7 +43,7 @@ page {
   font-weight: bolder;
   border-style:solid;
   font-family:"Times New Roman";
-  border:thin double #0000ee;
+  border:thin double #576b95;
   margin-top: 0.2em;
   margin-bottom: 0.2em;
   margin-left: 0.5em;
@@ -42,18 +51,21 @@ page {
   padding-left: 0.2em;
   min-width: 10em;
   box-shadow: 5px 5px 5px #888;
+  flex-grow: 1;
+  display: flex;
 }
 
 .bbs-header{
   color: #fcf234;
-  font-size: 16px;
+  font-size: 11rpc;
   font-weight: bold;
   text-align: center;
+  flex-grow: 1;
 }
 
 .line{
     height: 16px;
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid #888;
     text-align: center;
     margin-left: 0.5em;
     margin-right: 0.5em;    
@@ -61,11 +73,16 @@ page {
 
 #num-mult-sel{  
   min-width: 2.5em;
+  align-content: center;
+  vertical-align: middle;
 }
 
 #num-edit{
-  max-width: 5em;
-  vertical-align: middle;
+  vertical-align: middle;  
+  align-content: center;
+  flex-grow: 1;
+  display: flex;
+  max-width: 6em;
 }
 
 #contact-btn{
@@ -79,14 +96,37 @@ page {
 }
 
 #bbs{
-  border-style:dotted;
-  border:thin double #666;
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
+  border:1px #888;
+  border-style:none none solid none;
+  margin: 0.2em 1em 0.2em 1em;
+  flex-grow: 1;
+  background-color: rgb(253,251,234);
 }
 
 .ul_style{
-  padding: 0.3em;
-  margin-top:0.5em;
-  color: #666;  
+  margin: 1em 0.2em 0.4em 0.2em;
+  flex-direction: column;
+  word-break: break-all;
+  border:1px rgb(139,156,254);
+  border-style:none none dashed none;
+}
+
+#add-bbs-container{
+  flex-direction:row;
+  display: flex;
+}
+
+#add-bbs{
+  display: inline-block;
+  align-content: center;
+  line-height:2.3;
+  font-size:13px; 
+  padding:0 1.34em;
+  background-color: #f8a3a7;
+}
+
+.foot{
+  float: right;
+  color: #555;
+  font: italic bold 10px/20px arial,sans-serif;
 }

@@ -1,4 +1,4 @@
-var carNo = {}
+var carNo = ""
 var pkastData = {
 
   /**
@@ -53,7 +53,37 @@ var pkastData = {
   },
   
   callowner: function (e) {
-    console.log('calling owner')
+    var carNumber = pkastData.data.cityCode[0][this.data.cityCodeIndex[0]] + pkastData.data.cityCode[1][this.data.cityCodeIndex[1]] + carNo;
+    console.log(carNumber);
+    
+    wx.request({
+      url: 'http://192.168.3.17/com.pkast.user-1.0-SNAPSHOT/pkast/user/get-user-bycar',
+      data:{
+        carNo:carNumber
+      },
+      header:{
+        'content-type': 'application/json',
+      },
+      success:function(response){
+        console.log("success");
+        console.log(response.data);
+        if(response.data.retCode == 0){
+          wx.makePhoneCall({
+            phoneNumber: response.data.data[0].phoneNum,
+          })
+        }        
+      },
+      fail:function(response){
+        console.log('fail');
+      },
+      complete:function(resonse){
+        console.log('complete');
+      },
+    })
+  },
+
+  addbbs: function(e){
+    console.log('add bbs.');
   },
 
   bindPickerChange: function (e) {

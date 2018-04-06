@@ -1,28 +1,37 @@
+<view id="entry" class="flex-wrp-row margin-lr">
+  <view id="user-enter" class="flex-wrp-row">
+    <picker id="num-mult-sel" class="margin-lr" mode="multiSelector" bindchange="bindMultiPickerChange" value="{{cityCodeIndex}}" range="{{cityCode}}">
+      <view class="car_no_editor">
+        {{cityCode[0][cityCodeIndex[0]]}} {{cityCode[1][cityCodeIndex[1]]}}
+      </view>
+    </picker>
+    <input id="num-edit" class="margin-lr" type="text" maxlength="5" focus="true" bindblur="bindNumEdit" placeholder='输入车牌'></input>
+  </view>
+  <button id="contact-btn" class=" margin-lr" bindtap="callowner" size="mini" type="primary">联系车主</button>
+</view>
+
 <view class="flex-wrp-row margin-lr">
-  <icon style='padding-right:0.2cm;' type="info"></icon>
+  <view class="bbs-header line"/>
   <picker bindchange="bindPickerChange" value="{{locationIndex}}" range="{{locations}}">
     <view id="location_selector" class="shadow-text">
       {{locations[locationIndex]}}
     </view>
-  </picker>   
-</view>
-<view id="entry" class="flex-wrp-row margin-lr">
-  <view id="user-enter" class="flex-wrp-row">
-  <picker id="num-mult-sel" mode="multiSelector" bindchange="bindMultiPickerChange" value="{{cityCodeIndex}}" range="{{cityCode}}">
-    <view class="car_no_editor">
-      {{cityCode[0][cityCodeIndex[0]]}} {{cityCode[1][cityCodeIndex[1]]}}
-    </view>
   </picker>
-  <input id="num-edit" type="text" maxlength="5" focus="true" bindblur="bindNumEdit"></input>
-  </view>
-  <button id="contact-btn" bindtap="callowner" size="mini" type="primary">联系车主
-  </button>
+  <image id="location-icon" src="../imgs/location.png"></image>  
+  <view class="bbs-header line"/>
 </view>
-<hr/>
-<view class="bbs-header line">
-<view class="bbs-header shadow-text">bbs</view>
-</view>
+
 <!-- bbs内容 -->
-<block id="bbs" wx:for="{{bbsNews}}" wx:key="*this">
-  <rich-text nodes="{{item}}" bindtap='{{item[0].bindtap}}'/>
-</block>
+<view id="bbs" >
+  <block wx:for="{{bbsNews}}" wx:key="*this">
+    <rich-text nodes="{{item}}" bindtap='{{item[0].bindtap}}'/>
+  </block>
+</view>
+<view id="add-bbs-container">
+<view style="flex-grow:1"/>
+  <button id="add-bbs" class="margin-lr" bindtap="addbbs" type="primary">+我要发布信息</button>
+  <view style="flex-grow:1"/>
+</view>
+<view>
+  <view class="foot margin-lr">powered by: <span style="color:#0000bb">leeboy_0333@163.com</span></view>
+</view>

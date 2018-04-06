@@ -37,6 +37,10 @@ public class UserService {
     @RequestMapping(method = RequestMethod.GET, path = "get-user-bycar", consumes = RequestConsumers.JSON, produces = RequestProducers.JSON)
     public Resp<UserInfo> getUserByCarNo(@RequestParam("carNo") String carNo){
         LOGGER.info("carNo : {}", carNo);
-        return Resp.makeResp(userImpl.getUserByCarNo(carNo));
+        UserInfo userInfo = userImpl.getUserByCarNo(carNo);
+        if(userInfo == null){
+            return Resp.makeResp();
+        }
+        return Resp.makeResp(userInfo);
     }
 }
