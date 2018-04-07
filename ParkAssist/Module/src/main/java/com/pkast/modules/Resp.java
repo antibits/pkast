@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Resp<T> {
-    private int retCode = 0;
+    private int retCode = RespRetCode.RET_SUCCESS.value();
 
     private int totalCount;
 
@@ -18,9 +18,9 @@ public class Resp<T> {
 
     private Resp(){}
 
-    public static <T> Resp<T> makeResp(){
+    public static <T> Resp<T> makeResp(RespRetCode retCode){
         Resp<T> result = new Resp<>();
-        result.retCode = 1;
+        result.retCode = retCode.value();
         return result;
     }
 

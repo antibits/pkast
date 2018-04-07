@@ -8,4 +8,6 @@ public interface UserBusiness {
     boolean editUser(UserInfo user);
 
     UserInfo getUserByCarNo(String carNo);
+
+    UserInfo getUserByWxNo(String userWxNo);
 }

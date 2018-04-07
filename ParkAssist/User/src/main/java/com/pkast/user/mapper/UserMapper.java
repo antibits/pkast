@@ -11,4 +11,6 @@ public interface UserMapper {
     int update(UserInfo user);
 
     List<UserInfo> getUserByCarNo(@Param("carNo") String carNo);
+
+    List<UserInfo> getUserByWxNo(@Param("wxNo") String userWxNo);
 }

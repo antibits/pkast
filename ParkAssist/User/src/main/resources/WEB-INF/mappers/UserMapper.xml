@@ -38,4 +38,8 @@
     <select id="getUserByCarNo" resultMap="user">
         select wxNo, xiaoqu, phoneNum, carNo from user where carNo=#{carNo}
     </select>
+
+    <select id="getUserByWxNo" resultMap="user">
+        select wxNo, xiaoqu, phoneNum, carNo from user where wxNo=#{wxNo}
+    </select>
 </mapper>

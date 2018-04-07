@@ -27,4 +27,8 @@ public class UserBusinessImpl implements UserBusiness {
     public UserInfo getUserByCarNo(String carNo) {
         return userDao.getUserByCarNo(carNo);
     }
+
+    public UserInfo getUserByWxNo(String userWxNo) {
+        return userDao.getUserByWxNo(userWxNo);
+    }
 }

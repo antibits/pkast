@@ -40,4 +40,9 @@ public class UserDao {
         List<UserInfo> userInfos = getMapper().getUserByCarNo(carNo);
         return CollectionUtil.isEmpty(userInfos)? null : userInfos.get(0);
     }
+
+    public UserInfo getUserByWxNo(String userWxNo) {
+        List<UserInfo> userInfos = getMapper().getUserByWxNo(userWxNo);
+        return CollectionUtil.isEmpty(userInfos)? null : userInfos.get(0);
+    }
 }
