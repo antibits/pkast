@@ -16,8 +16,8 @@ public class CollectionUtil {
         return map == null || map.isEmpty();
     }
 
-    public static <K, V> Map<K, V> initMap(K key, V val){
-        Map<K, V> map = new HashMap<>();
+    public static <K, V> Map<K, V> tinyMap(K key, V val){
+        Map<K, V> map = new HashMap<>(1);
         map.put(key, val);
         return map;
     }

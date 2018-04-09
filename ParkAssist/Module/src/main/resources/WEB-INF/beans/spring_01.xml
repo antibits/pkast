@@ -19,24 +19,34 @@
 
     <mvc:annotation-driven>
         <mvc:message-converters>
-            <bean id="jsonConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>application/json;charset=UTF-8</value>
-                        <!-- 避免IE出现下载JSON文件的情况 -->
-                        <value>text/html;charset=UTF-8</value>
-                    </list>
-                </property>
-                <property name="features">
-                    <list>
-                        <!-- <value>WriteMapNullValue</value> -->
-                        <value>QuoteFieldNames</value>
-                        <value>WriteDateUseDateFormat</value>
-                    </list>
-                </property>
-            </bean>
+            <ref bean="jsonConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <bean id="jsonConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+                <!-- 避免IE出现下载JSON文件的情况 -->
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+        <property name="features">
+            <list>
+                <!-- <value>WriteMapNullValue</value> -->
+                <value>QuoteFieldNames</value>
+                <value>WriteDateUseDateFormat</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter"/>
+            </list>
+        </property>
+    </bean>
 
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory"/>
@@ -63,6 +73,6 @@
 
     <!-- route config loading -->
     <bean id="routeConfig" class="com.pkast.basicconfig.RouteConfig">
-        <property name="routeConfigProps" value="classpath:WEB-INF/config/route-config.properties"/>
+        <property name="routeConfigProps" value="classpath:WEB-INF/config/route-conf.properties"/>
     </bean>
 </beans>

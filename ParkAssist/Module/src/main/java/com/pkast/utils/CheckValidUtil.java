@@ -1,8 +1,14 @@
 package com.pkast.utils;
 
 import com.pkast.basicconfig.RouteConfig;
+import com.pkast.modules.Resp;
+import com.pkast.modules.RespRetCode;
+import com.pkast.modules.UserInfo;
 import com.pkast.version.UserVersion;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.ParameterizedTypeReference;
+
+import java.util.Map;
 
 public class CheckValidUtil {
 
@@ -28,7 +34,7 @@ public class CheckValidUtil {
 
     public static boolean isUserExists(String wxNo){
         String userInfoUrl = getRouteConfig().getUserServiceBasePath() + "/pkast/user/" + UserVersion.V_0_0_1 + "/get-user-bywx";
-
-        return true;
+        Resp<UserInfo> respUserInfo = RestUtil.get(userInfoUrl, CollectionUtil.tinyMap("wxNo", wxNo), new ParameterizedTypeReference<Resp<UserInfo>>() {});
+        return respUserInfo != null &&  RespRetCode.RET_SUCCESS.value() == respUserInfo.getRetCode() && respUserInfo.getData() != null;
     }
 }

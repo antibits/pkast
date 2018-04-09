@@ -30,8 +30,13 @@ public class ServiceAop {
 
     @Around("execution (public * com.pkast..*Service.*(..)) && args(userWxNo, ..) && @annotation(com.pkast.utils.CheckUser)")
     public Object doCheck(ProceedingJoinPoint joinPoint, String userWxNo){
-        if(!CheckValidUtil.isWxValid(userWxNo) ){
-            return Resp.makeResp(RespRetCode.RET_NOTREG);
+        try{
+            if(!CheckValidUtil.isWxValid(userWxNo) ){
+                return Resp.makeResp(RespRetCode.RET_NOTREG);
+            }
+        }catch (Throwable e){
+            LOGGER.error("process error.", e);
+            return Resp.makeResp(RespRetCode.RET_FAIL);
         }
 
         return catchException(joinPoint);

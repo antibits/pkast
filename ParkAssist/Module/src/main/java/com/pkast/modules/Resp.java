@@ -69,4 +69,29 @@ public class Resp<T> {
     public List<T> getData() {
         return data;
     }
+
+    public void setRetCode(int retCode) {
+        this.retCode = retCode;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public void setCurrPage(int currPage) {
+        this.currPage = currPage;
+    }
+
+    public void setData(List<T> data) {
+        this.data = data;
+    }
+
 }
