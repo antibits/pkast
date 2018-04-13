@@ -18,27 +18,12 @@ import org.springframework.stereotype.Controller;
 public class ServiceAop {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceAop.class);
 
-    @Around("execution (public * com.pkast..*Service.*(..)) && !@annotation(com.pkast.utils.CheckUser)")
-    public Object catchException(ProceedingJoinPoint joinPoint){
-        try{
-            return joinPoint.proceed();
-        }catch (Throwable e){
-            LOGGER.error("process error.", e);
-        }
-        return Resp.makeResp(RespRetCode.RET_FAIL);
-    }
-
     @Around("execution (public * com.pkast..*Service.*(..)) && args(userWxNo, ..) && @annotation(com.pkast.utils.CheckUser)")
-    public Object doCheck(ProceedingJoinPoint joinPoint, String userWxNo){
-        try{
-            if(!CheckValidUtil.isWxValid(userWxNo) ){
-                return Resp.makeResp(RespRetCode.RET_NOTREG);
-            }
-        }catch (Throwable e){
-            LOGGER.error("process error.", e);
-            return Resp.makeResp(RespRetCode.RET_FAIL);
+    public Object doCheck(ProceedingJoinPoint joinPoint, String userWxNo) throws Throwable {
+        if(!CheckValidUtil.isWxValid(userWxNo) ){
+            return Resp.makeResp(RespRetCode.RET_NOTREG);
         }
 
-        return catchException(joinPoint);
+        return  joinPoint.proceed();
     }
 }

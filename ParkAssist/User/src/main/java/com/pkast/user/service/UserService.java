@@ -14,6 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping(path="/pkast/user/" + UserVersion.V_0_0_1 + "/")
 @JsonSerialize

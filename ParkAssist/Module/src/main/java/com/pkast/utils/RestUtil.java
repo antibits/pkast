@@ -1,5 +1,7 @@
 package com.pkast.utils;
 
+import com.pkast.session.SessionDispatcher;
+import com.pkast.session.SessionThreadLocal;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,6 +153,7 @@ public class RestUtil {
         }
         // Content-Type字段设置为application/json;
         headParams.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        headParams.add(HttpHeaders.COOKIE, SessionDispatcher.SESS_ID_NAME + "=" + SessionThreadLocal.getSessionId());
         return headParams;
     }
 

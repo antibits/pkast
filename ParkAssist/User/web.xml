@@ -8,6 +8,13 @@
         <!-- spring framework entry... -->
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+    <listener>
+        <listener-class>com.pkast.session.SessionListener</listener-class>
+    </listener>
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath*:WEB-INF/beans/*.xml</param-value>
@@ -16,7 +23,7 @@
     <!--  springmvc配置 -->
     <servlet>
         <servlet-name>springmvc</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <servlet-class>com.pkast.session.SessionDispatcher</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath*:WEB-INF/beans/*.xml</param-value>
