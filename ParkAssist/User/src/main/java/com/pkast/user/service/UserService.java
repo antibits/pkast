@@ -6,7 +6,7 @@ import com.pkast.modules.RespRetCode;
 import com.pkast.modules.UserInfo;
 import com.pkast.user.business.itf.UserBusiness;
 import com.pkast.utils.CheckUser;
-import com.pkast.version.UserVersion;
+import com.pkast.version.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
-@RequestMapping(path="/pkast/user/" + UserVersion.V_0_0_1 + "/")
+@RequestMapping(path="/pkast/user/" + Version.V_0_0_1 + "/")
 @JsonSerialize
 public class UserService{
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
@@ -52,8 +49,7 @@ public class UserService{
     @RequestMapping(method = RequestMethod.GET, path = "get-user-bycar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CheckUser
     public Resp<UserInfo> getUserByCarNo(@RequestParam("wxNo") String userWxNo, @RequestParam("carNo") @Nullable String carNo){
-        LOGGER.debug("carNo : {}", carNo);
-        UserInfo userInfo = userImpl.getUserByCarNo(carNo);
+        UserInfo userInfo = userImpl.getUserByCarNo(carNo.toUpperCase());
         if(userInfo == null){
             return Resp.makeResp(RespRetCode.RET_FAIL);
         }

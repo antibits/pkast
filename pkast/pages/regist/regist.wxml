@@ -1,0 +1,37 @@
+<view style='display:flex;flex-direction:row'>
+<view style='flex-grow:1'></view>
+<text style="color:#576b95;font-weight:bolder;">欢迎使用乐区服务</text>
+<view style='flex-grow:1'></view>
+</view>
+
+<view class='input_laber margin-lr'><span style="color:red">*</span>您的车牌:</view>
+<view id='carnum-editor' class=" margin-lr"  style="display:flex;flex-direction:row">
+    <picker class="margin-lr" mode="multiSelector" bindchange="bindMultiPickerChange" value="{{cityCodeIndex}}" range="{{cityCode}}">
+      <view class="car_no_editor">
+        {{cityCode[0][cityCodeIndex[0]]}} {{cityCode[1][cityCodeIndex[1]]}}
+      </view>
+    </picker>
+    <input id="num-edit" class="margin-lr" type="text" maxlength="6" focus="true" bindblur="bindNumEdit" placeholder='输入车牌'></input>
+  </view>
+
+<view class='input_laber margin-lr'><span style="color:red">*</span>您的电话:</view>
+<input id="phonenum-editor" class='margin-lr' type='text' maxlength='11' bindblur='bindPhoneEdit' placeholder='输入电话'></input>
+
+<view style='display:flex;flex-direction:row'>
+<view style='flex-grow:1'></view>
+<button id='reg_button' class='margin-lr' size='mini' type='primary' bindtap="regist" >注册</button>
+<view style='flex-grow:1'></view>
+</view>
+
+<view style='display:flex;flex-direction:row'>
+<view class='line'></view>
+<text class='declare margin-lr'>说明</text>
+<view class='line'></view>
+</view>
+<scroll-view class='declare margin-lr'>
+  <view class='declare margin-lr'>自您注册成为乐区的一员，我们向您保证：</view>
+  <view class='declare margin-lr'><span class='margin-lr' style='color:red'>1.</span>在您的停车位被陌生车主占用时，您能第一时间联系上车主；</view>
+  <view class='declare margin-lr'><span class='margin-lr' style='color:red'>2.</span>在您的小区业主论坛上，您可以方便的发布车位出租或者转让信息；</view>
+  <view class='declare margin-lr'><span class='margin-lr' style='color:red'>3.</span>在您的小区业主论坛上，您还可以自主的发布失物招领或者寻物启事；</view>
+  <view class='declare margin-lr'><span class='margin-lr' style='color:red'>4.</span>您如果有任何其他方面的咨询，尽管联系乐区管理员：<span class='margin-lr' style="font: italic bold 10px/20px arial,sans-serif;color:blue;">leeboy_0333@163.com</span>；</view>
+</scroll-view>

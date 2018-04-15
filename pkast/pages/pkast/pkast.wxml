@@ -5,7 +5,7 @@
         {{cityCode[0][cityCodeIndex[0]]}} {{cityCode[1][cityCodeIndex[1]]}}
       </view>
     </picker>
-    <input id="num-edit" class="margin-lr" type="text" maxlength="5" focus="true" bindblur="bindNumEdit" placeholder='输入车牌'></input>
+    <input id="num-edit" class="margin-lr" type="text" maxlength="6" focus="true" bindblur="bindNumEdit" placeholder='输入车牌'></input>
   </view>
   <button id="contact-btn" class=" margin-lr" bindtap="callowner" size="mini" type="primary">联系车主</button>
 </view>

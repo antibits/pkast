@@ -1,9 +1,9 @@
 /** wxss **/
-/** 修改button默认的点击态样式类**/
-.button-hover {
-  background-color: red;
+/** 修改默认的navigator点击态 **/
+.navigator-hover {
+    color:blue;
 }
-/** 添加自定义button点击态样式类**/
-.other-button-hover {
-  background-color: blue;
+/** 自定义其他点击态样式类 **/
+.other-navigator-hover {
+    color:red;
 }

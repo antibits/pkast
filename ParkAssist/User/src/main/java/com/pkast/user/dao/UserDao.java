@@ -22,18 +22,12 @@ public class UserDao {
         return sqlSessionTemplate.getMapper(UserMapper.class);
     }
 
-    public boolean insertUser(UserInfo user){
-        if(getMapper().addUser(user) > 0){
-            return true;
-        }
-        return false;
+    public int insertUser(UserInfo user){
+        return getMapper().addUser(user);
     }
 
-    public boolean updateUser(UserInfo user){
-        if(getMapper().update(user) > 0){
-            return true;
-        }
-        return false;
+    public int updateUser(UserInfo user){
+        return getMapper().update(user);
     }
 
     public UserInfo getUserByCarNo(String carNo){

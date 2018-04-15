@@ -23,12 +23,10 @@ public class SessionDispatcher extends DispatcherServlet {
         String sessionId = null;
         if(session != null && session.isPresent()){
             sessionId = session.get().getValue();
-            LOGGER.debug("{} session exists." , sessionId);
         }
         else{
             HttpSession sess = request.getSession();
             sessionId = sess.getId();
-            LOGGER.debug("{} created." ,sessionId);
         }
         SessionThreadLocal.setSessionId(sessionId);
         try {

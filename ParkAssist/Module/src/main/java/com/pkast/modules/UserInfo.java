@@ -1,18 +1,12 @@
 package com.pkast.modules;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class UserInfo {
-    @JsonProperty
     private String wxNo;
 
-    @JsonProperty
     private String xiaoqu;
 
-    @JsonProperty
     private String phoneNum;
 
-    @JsonProperty
     private String carNo;
 
     public String getWxNo() {

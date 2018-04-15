@@ -16,16 +16,15 @@
     </insert>
 
     <update id="update">
-        update user
-        <trim prefix="set" suffixOverrides=",">
+        <trim prefix="update user set" suffixOverrides=",">
             <if test="xiaoqu != null">
-                xiaoqu = #{xiaoqu}
+                xiaoqu = #{xiaoqu},
             </if>
            <if test="phoneNum != null">
-               phoneNum = #{phoneNum}
+               phoneNum = #{phoneNum},
            </if>
             <if test="carNo != null">
-                carNo = #{carNo}
+                carNo = #{carNo},
             </if>
         </trim>
         <where>

@@ -12,7 +12,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -26,11 +28,17 @@ public class RestUtil {
 
     public static <K, V, M extends Map<K, V>> String makeUrlWithParams(String url, M params){
         StringBuilder sb = new StringBuilder(url);
-        if(!CollectionUtil.isEmpty(params)){
-            sb.append("?");
+        if(CollectionUtil.isEmpty(params)){
+            return url;
         }
+        sb.append("?");
         params.entrySet().forEach(paramEntry->{
-            sb.append(paramEntry.getKey()).append("=").append(paramEntry.getValue()).append("&");
+            try {
+                String paramVal = URLEncoder.encode(String.valueOf(paramEntry.getValue()), "UTF-8");
+                sb.append(paramEntry.getKey()).append("=").append(paramVal).append("&");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         });
 
         return sb.substring(0, sb.length() - 1);
