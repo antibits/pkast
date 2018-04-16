@@ -18,7 +18,7 @@ public class LocationBusinessImpl implements LocationBusiness {
             location.setLocat_x_min(Math.min(location.getLocat_x_min(), existLocation.getLocat_x_min()));
             location.setLocat_x_max(Math.max(location.getLocat_x_max(), existLocation.getLocat_x_max()));
             location.setLocat_y_min(Math.min(location.getLocat_y_min(), existLocation.getLocat_y_min()));
-            location.setLocat_y_max(Math.min(location.getLocat_y_max(), existLocation.getLocat_y_max()));
+            location.setLocat_y_max(Math.max(location.getLocat_y_max(), existLocation.getLocat_y_max()));
         }
 
         return locationDao.insertLocation(location) > 0 ? true : false;
