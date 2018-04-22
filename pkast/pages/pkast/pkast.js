@@ -1,4 +1,4 @@
-var domain = 'http://u9tufv.natappfree.cc'
+var domain = 'http://eprte5.natappfree.cc'
 var userBasePath = '/pkast.user/pkast/user/'
 var locationBasePath = '/pkast.location/pkast/location/'
 var bbsBasePath = '/pkast.bbs/pkast/bbs/'
@@ -74,49 +74,83 @@ var pkastData = {
       });
       return;
     }
+
     wx.request({
-      url: domain+userBasePath+'0.0.1/get-user-bycar',
-      header: {
+      url: domain + locationBasePath + '0.0.1/add-location',
+      header:{
         'content-type': 'application/json',
       },
-      data:{
-        wxNo:wxNo,
-        carNo:carNumber
-      },      
+      method:'POST',
+      data: {
+        id: addrList[pkastData.data.locationIndex].id,
+        xiaoquName: addrList[pkastData.data.locationIndex].address,
+        locat_x_min: addrList[pkastData.data.locationIndex].location_x,
+        locat_x_max: addrList[pkastData.data.locationIndex].location_x,
+        locat_y_min: addrList[pkastData.data.locationIndex].location_y,
+        locat_y_max: addrList[pkastData.data.locationIndex].location_y
+      }, 
       success:function(response){
-        if(response.data.retCode == ret_code_suc){
-          // 成功，呼叫
-          wx.makePhoneCall({
-            phoneNumber: response.data.data[0].phoneNum,
-          })
-        }
-        else if(response.data.retCode == ret_code_notreg){
-          // 未注册
-          wx.showModal({
-            title: '您还未注册~',
-            content: '您需先注册车主信息，才能发起呼叫哦~',
-            success: function (res) {
-              if (res.confirm) {
-                
-                wx.navigateTo({
-                  url: '/pages/regist/regist?xiaoquId=' + addrList[pkastData.data.locationIndex].id + '&wxNo=' + wxNo,
+        if(response.data == true){
+          wx.request({
+            url: domain + userBasePath + '0.0.1/get-user-bycar',
+            header: {
+              'content-type': 'application/json',
+            },
+            data: {
+              wxNo: wxNo,
+              carNo: carNumber
+            },
+            success: function (response) {
+              if (response.data.retCode == ret_code_suc) {
+                // 成功，呼叫
+                wx.makePhoneCall({
+                  phoneNumber: response.data.data[0],
                 })
               }
-            }
+              else if (response.data.retCode == ret_code_notreg) {
+                // 未注册
+                wx.showModal({
+                  title: '您还未注册~',
+                  content: '您需先注册车主信息，才能发起呼叫哦~',
+                  success: function (res) {
+                    if (res.confirm) {
+
+                      wx.navigateTo({
+                        url: '/pages/regist/regist?xiaoquId=' + addrList[pkastData.data.locationIndex].id + '&wxNo=' + wxNo,
+                      })
+                    }
+                  }
+                })
+              }
+            },
+            fail: function (response) {
+              pkastData.requestErrToast();
+            },
           })
         }
+        else{
+          console.log("some thing wrong write location information." + response.data);
+          pkastData.requestErrToast();
+        }
       },
-      fail:function(response){
-        wx.showToast({
-          title: '请检查网络~',
-          icon: 'none'
-        })
-      },
+      fail: function (response){
+        pkastData.requestErrToast();
+      }
+    })   
+  },
+
+  requestErrToast:function(){
+    wx.showToast({
+      title: '请检查网络~',
+      icon: 'none'
     })
   },
 
   addbbs: function(e){
     console.log('add bbs.');
+    wx.navigateTo({
+      url: '/pages/editbbs/editbbs',
+    })
   },
 
   bindPickerChange: function (e) {
@@ -154,11 +188,11 @@ var pkastData = {
             for (var i = 0; i < res.data.data.length; i++) {
               addrList[i] = {
                 id: res.data.data[i].id,
-                address: res.data.data[i].address,
+                address: res.data.data[i].title,
                 location_x: res.data.data[i].location.lat,
                 location_y: res.data.data[i].location.lng
               };
-              addressNames[i] = res.data.data[i].address;
+              addressNames[i] = res.data.data[i].title;
             }
             page.setData({
               locations:addressNames,
@@ -195,7 +229,6 @@ var pkastData = {
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    console.log("ready to get location.")
     pkastData.getLocationInfo(this);
     pkastData.getWxNo(this);
   },

@@ -48,11 +48,11 @@ public class UserService{
 
     @RequestMapping(method = RequestMethod.GET, path = "get-user-bycar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CheckUser
-    public Resp<UserInfo> getUserByCarNo(@RequestParam("wxNo") String userWxNo, @RequestParam("carNo") @Nullable String carNo){
+    public Resp<String> getUserByCarNo(@RequestParam("wxNo") String userWxNo, @RequestParam("carNo") @Nullable String carNo){
         UserInfo userInfo = userImpl.getUserByCarNo(carNo.toUpperCase());
         if(userInfo == null){
             return Resp.makeResp(RespRetCode.RET_FAIL);
         }
-        return Resp.makeResp(userInfo);
+        return Resp.makeResp(userInfo.getPhoneNum());
     }
 }

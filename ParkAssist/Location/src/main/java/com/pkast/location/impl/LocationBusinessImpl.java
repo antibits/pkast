@@ -5,6 +5,7 @@ import com.pkast.location.itf.LocationBusiness;
 import com.pkast.modules.LocationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class LocationBusinessImpl implements LocationBusiness {
@@ -12,6 +13,7 @@ public class LocationBusinessImpl implements LocationBusiness {
     @Autowired
     private LocationDao locationDao;
 
+    @Transactional
     public boolean addLocation(LocationInfo location) {
         LocationInfo existLocation = locationDao.getLocationById(location.getId());
         if(existLocation != null){
@@ -19,8 +21,13 @@ public class LocationBusinessImpl implements LocationBusiness {
             location.setLocat_x_max(Math.max(location.getLocat_x_max(), existLocation.getLocat_x_max()));
             location.setLocat_y_min(Math.min(location.getLocat_y_min(), existLocation.getLocat_y_min()));
             location.setLocat_y_max(Math.max(location.getLocat_y_max(), existLocation.getLocat_y_max()));
+
+            if(location.equals(existLocation)){
+                return true;
+            }
         }
 
-        return locationDao.insertLocation(location) > 0 ? true : false;
+        locationDao.insertLocation(location);
+        return true;
     }
 }

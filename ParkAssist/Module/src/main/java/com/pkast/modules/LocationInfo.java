@@ -60,4 +60,36 @@ public class LocationInfo {
     public void setLocat_y_max(double locat_y_max) {
         this.locat_y_max = locat_y_max;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LocationInfo)) return false;
+
+        LocationInfo that = (LocationInfo) o;
+
+        if (Double.compare(that.getLocat_x_min(), getLocat_x_min()) != 0) return false;
+        if (Double.compare(that.getLocat_x_max(), getLocat_x_max()) != 0) return false;
+        if (Double.compare(that.getLocat_y_min(), getLocat_y_min()) != 0) return false;
+        if (Double.compare(that.getLocat_y_max(), getLocat_y_max()) != 0) return false;
+        if (!getId().equals(that.getId())) return false;
+        return getXiaoquName().equals(that.getXiaoquName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = getId().hashCode();
+        result = 31 * result + getXiaoquName().hashCode();
+        temp = Double.doubleToLongBits(getLocat_x_min());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getLocat_x_max());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getLocat_y_min());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getLocat_y_max());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }

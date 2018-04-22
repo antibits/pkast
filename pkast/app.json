@@ -1,16 +1,18 @@
 {
-  "pages": [    
+  "pages": [
     "pages/pkast/pkast",
+    "pages/editbbs/editbbs",    
     "pages/regist/regist",
     "pages/demo/demo",
     "pages/index/index",
     "pages/logs/logs"
-    
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "乐区 - 祝您开心愉快每一天!",
-    "navigationBarTextStyle": "black"
+    "navigationBarTitleText": "挪车小助手",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true,
+    "navigationStyle": "default"
   }
 }

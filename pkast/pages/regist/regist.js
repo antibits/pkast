@@ -1,4 +1,4 @@
-var domain = 'http://u9tufv.natappfree.cc'
+var domain = 'http://eprte5.natappfree.cc'
 var userBasePath = '/pkast.user/pkast/user/'
 var locationBasePath = '/pkast.location/pkast/location/'
 var bbsBasePath = '/pkast.bbs/pkast/bbs/'
@@ -51,7 +51,15 @@ var registData={
         carNo:carNumber
       },
       success:function(data){
-        console.log(data);
+        wx.showToast({
+          title: '注册成功！',
+          icon: 'success'
+        })
+        setTimeout(function(){
+          wx.navigateBack({
+            delta:1
+          })
+        }, 1500);
       }
     })
   },

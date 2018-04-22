@@ -4,6 +4,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -11,7 +12,9 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
     <context:component-scan base-package="com.pkast"></context:component-scan>
     <!-- 启用切面 -->
@@ -53,7 +56,7 @@
         <constructor-arg index="1" value="BATCH"/>
     </bean>
 
-    <bean id="dataSource" class="com.pkast.db.ProxyedDataSourceFactory">
+    <bean id="dataSource" class="com.pkast.db.ProxyedDataSource">
         <property name="basicFieldProps" value="classpath:WEB-INF/db/basic.properties"/>
         <property name="driverProps" value="classpath:WEB-INF/db/driver.properties"/>
     </bean>
@@ -61,15 +64,13 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath*:WEB-INF/mappers/**/*Mapper.xml"/>
-        <property name="transactionFactory">
-            <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory"/>
-        </property>
     </bean>
 
-    <!-- 事务支持 -->
+    <!-- 使用spring事务管理 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+    <tx:annotation-driven />
 
     <!-- route config loading -->
     <bean id="routeConfig" class="com.pkast.basicconfig.RouteConfig">

@@ -17,11 +17,13 @@ public class UserBusinessImpl implements UserBusiness {
     }
 
     public boolean addUser(UserInfo user) {
-        return userDao.insertUser(user) > 0 ? true : false;
+        userDao.insertUser(user);
+        return true;
     }
 
     public boolean editUser(UserInfo user) {
-        return userDao.updateUser(user) > 0 ? true : false;
+        userDao.updateUser(user);
+        return true;
     }
 
     public UserInfo getUserByCarNo(String carNo) {

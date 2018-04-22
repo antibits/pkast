@@ -1,0 +1,57 @@
+<radio-group class="radio-group margin-lr" bindchange="radioChange">
+  <label class="radio" wx:for="{{items}}" wx:key="name">
+    <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+  </label>
+</radio-group>
+
+<view id="TXNC" hidden='{{HIDDEN_TXNC}}'>
+  <label class='margin-tb margin-lr'>车位</label>
+  <input class='margin-tb margin-lr editor' placeholder='被占的车位编号'></input>
+  <label class='margin-tb margin-lr'>车辆车牌</label>
+  <input class='margin-tb margin-lr editor' placeholder='占用车位的车辆号牌'></input>
+</view>
+
+<view id="CWCZ" hidden='{{HIDDEN_CWCZ}}'>
+  <label class='margin-tb margin-lr'>车位</label>
+  <input class='margin-tb margin-lr editor' placeholder='您的私有车位'></input>
+  <label class='margin-tb margin-lr'>出租时间</label>
+  <input class='margin-tb margin-lr editor' placeholder='出租时长（月）'></input>
+  <label class='margin-tb margin-lr'>出租价格</label>
+  <input class='margin-tb margin-lr editor' placeholder='（元/月）'></input>
+</view>
+
+
+<view id="CWZR" hidden='{{HIDDEN_CWZR}}'>
+  <label class='margin-tb margin-lr'>车位</label>
+  <input class='margin-tb margin-lr editor' placeholder='您的私有车位'></input>
+  <label class='margin-tb margin-lr'>转让价格</label>
+  <input class='margin-tb margin-lr editor' placeholder='（元）'></input>
+</view>
+
+
+<view id="SWZL" hidden='{{HIDDEN_SWZL}}'>
+  <label class='margin-tb margin-lr'>物品</label>
+  <input class='margin-tb margin-lr editor' placeholder='拾到的物品'></input>
+  <label class='margin-tb margin-lr'>拾到时间</label>
+  <input class='margin-tb margin-lr editor' placeholder='几天前'></input>
+</view>
+
+<view id="SWZL" hidden='{{HIDDEN_SWZL}}'>
+  <label class='margin-tb margin-lr'>物品</label>
+  <input class='margin-tb margin-lr editor' placeholder='拾到的物品'></input>
+  <label class='margin-tb margin-lr'>拾到时间</label>
+  <input class='margin-tb margin-lr editor' placeholder='几天前（不填即为今天）'></input>
+</view>
+
+<view id="XWQS" hidden='{{HIDDEN_XWQS}}'>
+  <label class='margin-tb margin-lr'>物品</label>
+  <input class='margin-tb margin-lr editor' placeholder='拾到的物品'></input>
+  <label class='margin-tb margin-lr'>遗失时间</label>
+  <input class='margin-tb margin-lr editor' placeholder='几天前（不填即为今天）'></input>
+</view>
+
+<view style='display:flex;flex-direction:column;margin-top:1em;'>
+<view style='display:flex;flex-grow:1'/>
+<button id="pulish_btn" size='mini' type='primary' bindtap='pulish'>+发布</button>
+<view style='display:flex;flex-grow:1'/>
+</view>
