@@ -103,14 +103,6 @@ page {
   background-color: rgb(253,251,234);
 }
 
-.ul_style{
-  margin: 1em 0.2em 0.4em 0.2em;
-  flex-direction: column;
-  word-break: break-all;
-  border:1px rgb(139,156,254);
-  border-style:none none dashed none;
-}
-
 #add-bbs-container{
   flex-direction:row;
   display: flex;

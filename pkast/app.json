@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/pkast/pkast",
-    "pages/editbbs/editbbs",    
+    "pages/editbbs/editbbs",   
+    
     "pages/regist/regist",
     "pages/demo/demo",
     "pages/index/index",

@@ -18,7 +18,6 @@ var addressNames = [];
 
 
 var pkastData = {
-
   /**
    * 页面的初始数据
    */
@@ -30,31 +29,40 @@ var pkastData = {
 
     bbsNews: [[{
       name: 'div',
-      bindtap: 'call_13682458563',
+      bindtap: '13682458563',
       attrs: {
-        class: 'ul_style',
-        style: 'color:red'
+        style: 'word-break: break-all;margin: 1em 0.2em 0.4em 0.2em;color:rgb(238,38,48);font-weight:bolder;border:1px rgb(139,156,254);border-style:none none dashed none;'
       },
       children: [{
         type: 'text',
         text: 'call her!',
-      }, {
+      }, 
+      {
         name: "span",
         attrs: {
-          style: "color:blue",
-          class: "span_class"
+          style: "color:rgb(244,145,150);font-weight:bolder",
         },
         children: [{
           type: "text",
           text: '我是span标签,哈哈哈哈'
         }]
+      },
+      {
+        name: 'span',
+        attrs: {
+          style: "color:rgb(244,145,150)"
+        },
+        children: [{
+          type: 'text',
+          text: 'hello span 2'
+        }]
       }]
     }],
     [{
       name: 'div',
-      bindtap: 'call_18986287022',
+      phoneNum: '18986287022',
       attrs: {
-        class: 'ul_style',
+        style: 'word-break: break-all;margin: 1em 0.2em 0.4em 0.2em;color:rgb(238,38,48);font-weight:bolder;border:1px rgb(139,156,254);border-style:none none dashed none;',
       },
       children: [{
         type: 'text',
@@ -281,8 +289,8 @@ var pkastData = {
   bindNumEdit: function (e) {
     carNo = e.detail.value;
   }
-  
 }
+
 
 /**
  * 定义拨号绑定

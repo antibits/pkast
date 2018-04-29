@@ -1,6 +1,7 @@
 package com.pkast.db;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
@@ -82,7 +83,7 @@ public class ProxyedDataSource extends BasicDataSource {
 
     private String getDatabaseName(){
         // TODO 当涉及动态获取数据库时，根据动态数据库运算获取当前数据库实例
-        return "userdb";
+        return DBNameUtil.getDbName();
     }
 
     /**

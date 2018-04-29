@@ -15,18 +15,6 @@ public class CheckValidUtil {
 
     private static final Pattern PHONE_NUM_PATTERN = Pattern.compile("^[\\d]{7,13}$");
 
-    /**
-     * @see #getRouteConfig()
-     */
-    private static RouteConfig routeConfig = null;
-
-    private static synchronized RouteConfig getRouteConfig(){
-        if(routeConfig == null){
-            routeConfig = BeanUtil.getBean("routeConfig");
-        }
-        return routeConfig;
-    }
-
     public static boolean isWxValid(String wxNo){
         boolean isBlank = StringUtils.isBlank(wxNo);
         if(isBlank){
@@ -36,7 +24,7 @@ public class CheckValidUtil {
     }
 
     public static boolean isUserExists(String wxNo){
-        String userInfoUrl = getRouteConfig().getUserServiceBasePath() + Version.V_0_0_1 + "/get-user-bywx";
+        String userInfoUrl = RouteConfig.getInstance().getUserServiceBasePath() + Version.V_0_0_1 + "/get-user-bywx";
         Resp<UserInfo> respUserInfo = RestUtil.get(userInfoUrl, CollectionUtil.tinyMap("wxNo", wxNo), new ParameterizedTypeReference<Resp<UserInfo>>() {});
         return respUserInfo != null &&  RespRetCode.RET_SUCCESS.value() == respUserInfo.getRetCode() && respUserInfo.getData() != null;
     }

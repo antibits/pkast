@@ -30,4 +30,8 @@ public class LocationBusinessImpl implements LocationBusiness {
         locationDao.insertLocation(location);
         return true;
     }
+
+    public LocationInfo getLocationInfo(String xiaoquId) {
+        return locationDao.getLocationById(xiaoquId);
+    }
 }

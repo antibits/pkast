@@ -4,4 +4,6 @@ import com.pkast.modules.LocationInfo;
 
 public interface LocationBusiness {
     boolean addLocation(LocationInfo location);
+
+    LocationInfo getLocationInfo(String xiaoquId);
 }

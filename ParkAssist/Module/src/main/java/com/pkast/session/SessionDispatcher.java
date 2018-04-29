@@ -1,5 +1,6 @@
 package com.pkast.session;
 
+import com.pkast.db.DBNameUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ public class SessionDispatcher extends DispatcherServlet {
 
     @Override
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        DBNameUtil.setDbName(null);
         Optional<Cookie> session = request.getCookies() == null ? null:
                 Stream.of(request.getCookies()).filter(cookie ->SESS_ID_NAME.equals(cookie.getName())).findAny();
         String sessionId = null;

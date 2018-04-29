@@ -13,6 +13,8 @@ public class LocationInfo {
 
     private double locat_y_max;
 
+    private String xiaoqu_db_id;
+
     public String getId() {
         return id;
     }
@@ -59,6 +61,14 @@ public class LocationInfo {
 
     public void setLocat_y_max(double locat_y_max) {
         this.locat_y_max = locat_y_max;
+    }
+
+    public String getXiaoqu_db_id() {
+        return xiaoqu_db_id;
+    }
+
+    public void setXiaoqu_db_id(String xiaoqu_db_id) {
+        this.xiaoqu_db_id = xiaoqu_db_id;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.pkast.basicconfig;
 
+import com.pkast.utils.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -17,6 +18,18 @@ public class RouteConfig {
     private String locationServiceBasePath;
 
     private String bbsServiceBasePath;
+
+    /**
+     * @see #getInstance()
+     */
+    private static RouteConfig routeConfig = null;
+
+    public static synchronized RouteConfig getInstance(){
+        if(routeConfig == null){
+            routeConfig = BeanUtil.getBean("routeConfig");
+        }
+        return routeConfig;
+    }
 
     public void setRouteConfigProps(Resource routeConfigProps){
         Properties prop = new Properties();
