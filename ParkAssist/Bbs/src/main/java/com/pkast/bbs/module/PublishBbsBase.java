@@ -14,9 +14,21 @@ public abstract class PublishBbsBase implements Cloneable{
 
     private String creater;
 
-    private long timeStamp;
+    private long timestamp = System.currentTimeMillis();
 
     private String xiaoquId;
+
+    static {
+        try {
+            PublishBbsBase.class.forName(PublishBbsCWCZ.class.getName());
+            PublishBbsBase.class.forName(PublishBbsCWZR.class.getName());
+            PublishBbsBase.class.forName(PublishBbsXWQS.class.getName());
+            PublishBbsBase.class.forName(PublishBbsSWZL.class.getName());
+            PublishBbsBase.class.forName(PublishBbsTXNC.class.getName());
+        } catch (ClassNotFoundException e) {
+            LOGGER.error("load generation class err", e);
+        }
+    }
 
     protected PublishBbsBase(){
         protypeRegist();
@@ -56,12 +68,12 @@ public abstract class PublishBbsBase implements Cloneable{
         this.creater = creater;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getXiaoquId() {

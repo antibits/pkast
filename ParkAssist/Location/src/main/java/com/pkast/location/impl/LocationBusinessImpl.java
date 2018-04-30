@@ -26,12 +26,17 @@ public class LocationBusinessImpl implements LocationBusiness {
                 return true;
             }
         }
-
         locationDao.insertLocation(location);
         return true;
     }
 
     public LocationInfo getLocationInfo(String xiaoquId) {
         return locationDao.getLocationById(xiaoquId);
+    }
+
+    @Override
+    public void initXiaoquDb(String xiaoquId) {
+        LocationInfo insertedLocatInfo = locationDao.getLocationById(xiaoquId);
+        locationDao.initDb(insertedLocatInfo.getXiaoqu_db_id());
     }
 }

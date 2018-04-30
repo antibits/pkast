@@ -11,10 +11,11 @@
         <result column="locat_x_max" property="locat_x_max"/>
         <result column="locat_y_min" property="locat_y_min"/>
         <result column="locat_y_max" property="locat_y_max"/>
+        <result column="xiaoqu_db_id" property="xiaoqu_db_id"/>
     </resultMap>
 
     <insert id="addLocation" parameterType="com.pkast.modules.LocationInfo">
-        insert into xiaoqu values(#{id}, #{xiaoquName}, #{locat_x_min}, #{locat_x_max}, #{locat_y_min}, #{locat_y_max})
+        insert into xiaoqu (id, xiaoquName, locat_x_min, locat_x_max, locat_y_min, locat_y_max)values(#{id}, #{xiaoquName}, #{locat_x_min}, #{locat_x_max}, #{locat_y_min}, #{locat_y_max})
         on duplicate key update
         xiaoquName=values(xiaoquName),
         locat_x_min=values(locat_x_min),
@@ -31,4 +32,8 @@
             </if>
         </where>
     </select>
+
+    <update id="initDb">
+        call init_db(#{dbId});
+    </update>
 </mapper>

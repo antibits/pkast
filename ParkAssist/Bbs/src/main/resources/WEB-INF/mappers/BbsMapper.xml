@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pkast.bbs.mapper.BbsMapper">
+    <resultMap type="com.pkast.bbs.module.BbsDbModel" id="bbsModel">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="creater" property="creater"/>
+        <result column="timestamp" property="timestamp"/>
+        <result column="properties" property="properties"/>
+    </resultMap>
+
+    <select id="getPublishBbs" resultMap="bbsModel">
+        select * from bbs
+        <where>
+            <if test="bbsType != null">
+                type = #{bbsType}
+            </if>
+        </where>
+        order by timestamp desc limit #{offset}, #{limit}
+    </select>
+
+    <insert id="addPulishBbs" parameterType="com.pkast.bbs.module.BbsDbModel">
+        insert into bbs (type, creater, timestamp, properties)values(#{type}, #{creater}, #{timestamp}, #{properties})
+    </insert>
+
+    <delete id="delPulishBbs">
+        delete from bbs
+        <where>
+            <if test="bbsId != null">
+                id = #{bbsId}
+            </if>
+            <if test="bbsId == null">
+                0
+            </if>
+        </where>
+    </delete>
+</mapper>

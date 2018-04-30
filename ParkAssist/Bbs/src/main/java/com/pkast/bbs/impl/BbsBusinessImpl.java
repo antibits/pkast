@@ -44,7 +44,7 @@ public class BbsBusinessImpl implements BbsBusiness {
                 bbsModels.stream()
                         .map(bbsModel -> {
                             PublishBbsBase publishBbs = PublishBbsFactory.makePublishBbs(bbsModel.getType(), bbsModel.getPropertyMap());
-                            BbsItem bbsItem = publishBbs.toBbsItem();
+                            BbsItem bbsItem = publishBbs == null ? null : publishBbs.toBbsItem();
                             return bbsItem == null ? null : Arrays.asList(bbsItem);
                         })
                         .filter(item -> item != null)

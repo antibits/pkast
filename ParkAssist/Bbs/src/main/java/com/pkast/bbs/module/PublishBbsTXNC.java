@@ -1,6 +1,6 @@
 package com.pkast.bbs.module;
 
-public class PulishBbsTXNC extends PublishBbsBase {
+public class PublishBbsTXNC extends PublishBbsBase {
     private String parkNo;
 
     private String carNo;
@@ -21,6 +21,7 @@ public class PulishBbsTXNC extends PublishBbsBase {
         this.carNo = carNo;
     }
 
+    private final static PublishBbsBase PROT_TYPE_INSTANCE = new PublishBbsTXNC();
     @Override
     protected String getBbsType() {
         return "TXNC";

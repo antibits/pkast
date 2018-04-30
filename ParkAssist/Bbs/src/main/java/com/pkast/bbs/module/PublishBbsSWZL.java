@@ -21,6 +21,7 @@ public class PublishBbsSWZL extends PublishBbsBase {
         this.dayAgo = dayAgo;
     }
 
+    private final static PublishBbsBase PROT_TYPE_INSTANCE = new PublishBbsSWZL();
     @Override
     protected String getBbsType() {
         return "SWZL";

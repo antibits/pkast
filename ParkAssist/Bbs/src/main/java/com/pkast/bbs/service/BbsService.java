@@ -7,19 +7,20 @@ import com.pkast.bbs.module.PublishBbsRaw;
 import com.pkast.version.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/pkast/user/" + Version.V_0_0_1 + "/")
+@RequestMapping(path="/pkast/bbs/" + Version.V_0_0_1 + "/")
 @JsonSerialize
 public class BbsService {
     @Autowired
     private BbsBusiness bbsBusiness;
 
     @RequestMapping(method = RequestMethod.GET, path =  "get-bbs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<List<BbsItem>> getBbsItems(@RequestParam("pageIdx") int pageIdx, @RequestParam("pageSize") int pageSize, @RequestParam("xiaoquId") String xiaoquId, @RequestParam("type") String bbsType){
+    public List<List<BbsItem>> getBbsItems(@RequestParam("pageIdx") int pageIdx, @RequestParam("pageSize") int pageSize, @RequestParam("xiaoquId") String xiaoquId, @RequestParam("type") @Nullable String bbsType){
         return bbsBusiness.getBbs(pageIdx, pageSize, xiaoquId, bbsType);
     }
 

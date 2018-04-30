@@ -5,6 +5,7 @@ import com.pkast.modules.LocationInfo;
 import com.pkast.utils.CollectionUtil;
 import com.pkast.utils.RestUtil;
 import com.pkast.version.Version;
+import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,8 @@ public class BbsDbUtil {
     private static final ReentrantReadWriteLock.ReadLock readLock = cacheLock.readLock();
 
     private static  final ReentrantReadWriteLock.WriteLock writeLock = cacheLock.writeLock();
+
+    private static final String DB_NAME_SUFFIX = "db_";
 
     public static String getDbName(String xiaoquId){
         readLock.lock();
@@ -39,8 +42,9 @@ public class BbsDbUtil {
             if(xiaoquInfo == null){
                 return null;
             }
-            xiaoquId2DbName.put(xiaoquId, xiaoquInfo.getXiaoqu_db_id());
-            return xiaoquInfo.getXiaoqu_db_id();
+            dbName = DB_NAME_SUFFIX + xiaoquInfo.getXiaoqu_db_id();
+            xiaoquId2DbName.put(xiaoquId, dbName);
+            return dbName;
         }finally {
             writeLock.unlock();
         }
@@ -50,7 +54,7 @@ public class BbsDbUtil {
         String locationInfoUrl = RouteConfig.getInstance().getLocationServiceBasePath() + Version.V_0_0_1 + "/" + "get-location";
         Map<String, String> params = CollectionUtil.tinyMap("xiaoquId", xiaoquId);
 
-        return RestUtil.get(locationInfoUrl, params, LocationInfo.class);
+        return RestUtil.get(locationInfoUrl, params, new ParameterizedTypeReference<LocationInfo>() {});
     }
 
 }

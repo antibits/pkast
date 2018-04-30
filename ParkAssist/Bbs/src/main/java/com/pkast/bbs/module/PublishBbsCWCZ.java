@@ -31,6 +31,7 @@ public class PublishBbsCWCZ extends PublishBbsBase {
         this.price = price;
     }
 
+    private final static PublishBbsBase PROT_TYPE_INSTANCE = new PublishBbsCWCZ();
     @Override
     protected String getBbsType() {
         return "CWCZ";

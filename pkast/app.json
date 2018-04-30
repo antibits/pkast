@@ -1,7 +1,9 @@
 {
   "pages": [
+    
+    
     "pages/pkast/pkast",
-    "pages/editbbs/editbbs",   
+     "pages/editbbs/editbbs",
     
     "pages/regist/regist",
     "pages/demo/demo",
@@ -13,7 +15,6 @@
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "挪车小助手",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true,
-    "navigationStyle": "default"
+    "enablePullDownRefresh": true
   }
 }

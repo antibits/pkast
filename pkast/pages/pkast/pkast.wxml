@@ -22,7 +22,7 @@
 </view>
 
 <!-- bbs内容 -->
-<view id="bbs" >
+<view id="bbs" style='display:flex;flex-direction:column'>
   <block wx:for="{{bbsNews}}" wx:key="*this">
     <rich-text nodes="{{item}}" bindtap='{{item[0].bindtap}}'/>
   </block>

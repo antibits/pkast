@@ -23,4 +23,8 @@ public class LocationDao {
     public LocationInfo getLocationById(String id){
         return getMapper().getLocationById(id);
     }
+
+    public void initDb(String dbId){
+        getMapper().initDb(dbId);
+    }
 }

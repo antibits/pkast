@@ -41,14 +41,16 @@ public class BbsItemBuilder {
         L2,
         L3;
 
-        private final static Map<EmphasizeLevel, BbsItemAttr> level2Attr = new HashMap<>();
-        static {
-            level2Attr.put(L1, new BbsEmphasizeL1ItemAttr());
-            level2Attr.put(L2, new BbsEmphasizeL2ItemAttr());
-            level2Attr.put(L3, new BbsEmphasizeL3ItemAttr());
-        }
         private BbsItemAttr toItemAttr(){
-            return  level2Attr.get(this);
+            switch (this){
+                case L1:
+                    return new BbsEmphasizeL1ItemAttr();
+                case L2:
+                    return new BbsEmphasizeL2ItemAttr();
+                case L3:
+                    return new BbsEmphasizeL3ItemAttr();
+            }
+            return null;
         }
     }
 }

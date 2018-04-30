@@ -18,7 +18,9 @@ public class LocationService {
 
     @RequestMapping(method = RequestMethod.POST, path = "add-location",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean addLocation(@RequestBody LocationInfo location){
-        return locationBusiImpl.addLocation(location);
+        boolean result = locationBusiImpl.addLocation(location);
+        locationBusiImpl.initXiaoquDb(location.getId());
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "get-location",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

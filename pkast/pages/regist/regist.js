@@ -1,4 +1,4 @@
-var domain = 'http://eprte5.natappfree.cc'
+var domain = 'http://6nq5bj.natappfree.cc'
 var userBasePath = '/pkast.user/pkast/user/'
 var locationBasePath = '/pkast.location/pkast/location/'
 var bbsBasePath = '/pkast.bbs/pkast/bbs/'

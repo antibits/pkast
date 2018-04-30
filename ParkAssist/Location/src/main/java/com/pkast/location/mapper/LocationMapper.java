@@ -7,4 +7,6 @@ public interface LocationMapper {
     int addLocation(LocationInfo location);
 
     LocationInfo getLocationById(@Param("id") String id);
+
+    void initDb(@Param("dbId")String dbId);
 }
