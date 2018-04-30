@@ -1,5 +1,8 @@
 package com.pkast.bbs.module;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class PublishBbsCWZR extends PublishBbsBase {
     private String parkNo;
 
@@ -21,7 +24,6 @@ public class PublishBbsCWZR extends PublishBbsBase {
         this.price = price;
     }
 
-    private final static PublishBbsBase PROT_TYPE_INSTANCE = new PublishBbsCWZR();
     @Override
     protected String getBbsType() {
         return "CWZR";
@@ -33,7 +35,7 @@ public class PublishBbsCWZR extends PublishBbsBase {
                 .append(BbsItemBuilder.EmphasizeLevel.L3, "【转】")
                 .append("现有位于本小区的车位：")
                 .append(BbsItemBuilder.EmphasizeLevel.L1, parkNo)
-                .append("正在考虑转让。")
+                .append(",正在考虑转让。")
                 .append("价格：")
                 .append(BbsItemBuilder.EmphasizeLevel.L2, price > 0? price + "元/月": "面议")
                 .append("，欢迎电话垂询！")

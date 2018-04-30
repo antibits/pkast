@@ -18,18 +18,6 @@ public abstract class PublishBbsBase implements Cloneable{
 
     private String xiaoquId;
 
-    static {
-        try {
-            PublishBbsBase.class.forName(PublishBbsCWCZ.class.getName());
-            PublishBbsBase.class.forName(PublishBbsCWZR.class.getName());
-            PublishBbsBase.class.forName(PublishBbsXWQS.class.getName());
-            PublishBbsBase.class.forName(PublishBbsSWZL.class.getName());
-            PublishBbsBase.class.forName(PublishBbsTXNC.class.getName());
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("load generation class err", e);
-        }
-    }
-
     protected PublishBbsBase(){
         protypeRegist();
     }

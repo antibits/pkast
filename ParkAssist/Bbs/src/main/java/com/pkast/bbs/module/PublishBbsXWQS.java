@@ -1,5 +1,8 @@
 package com.pkast.bbs.module;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class PublishBbsXWQS extends PublishBbsBase {
     private String shortDesc;
 
@@ -21,7 +24,6 @@ public class PublishBbsXWQS extends PublishBbsBase {
         this.dayAgo = dayAgo;
     }
 
-    private final static PublishBbsBase PROT_TYPE_INSTANCE = new PublishBbsXWQS();
     @Override
     protected String getBbsType() {
         return "XWQS";

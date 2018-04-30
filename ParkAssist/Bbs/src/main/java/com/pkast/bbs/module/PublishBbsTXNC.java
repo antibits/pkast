@@ -1,5 +1,8 @@
 package com.pkast.bbs.module;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class PublishBbsTXNC extends PublishBbsBase {
     private String parkNo;
 
@@ -21,7 +24,6 @@ public class PublishBbsTXNC extends PublishBbsBase {
         this.carNo = carNo;
     }
 
-    private final static PublishBbsBase PROT_TYPE_INSTANCE = new PublishBbsTXNC();
     @Override
     protected String getBbsType() {
         return "TXNC";
