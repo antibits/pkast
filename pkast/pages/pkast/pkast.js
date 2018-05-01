@@ -1,7 +1,15 @@
-var domain = 'http://6nq5bj.natappfree.cc'
+var domain = 'http://192.168.3.17:9527'
 var userBasePath = '/pkast.user/pkast/user/'
 var locationBasePath = '/pkast.location/pkast/location/'
 var bbsBasePath = '/pkast.bbs/pkast/bbs/'
+
+var operatInit = 0;
+var operatPrevPage = 1;
+var operatNextPage = 2;
+
+
+var currBbsTypeIdx = 0
+var currBbsPageIdx = 1
 
 var txmapUrl = 'http://apis.map.qq.com/ws/place/v1/search?key=d84d6d83e0e51e481e50454ccbe8986b&keyword=小区&boundary='
 // 800米范围
@@ -27,6 +35,10 @@ var pkastData = {
     cityCode: [['鄂', '京', '津', '冀', '晋', '内蒙古', '辽', '吉', '黑', '沪', '苏', '浙', '皖', '闽', '赣', '鲁', '豫', '湘', '粤', '桂', '琼', '川', '贵', '云', '藏', '陕', '甘', '青', '宁', '新', '港', '澳', '台'], ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']],
     cityCodeIndex: [0, 0],
 
+    bbsTypes:['全部信息','提醒挪车','车位出租','车位转让','寻物启事','失物招领'],
+    bbsTypeEnums: [null, 'TXNC', 'CWCZ', 'CWZR', 'XWQS', 'SWZL'],
+    bbsTypeIndex: 0,
+
     bbsNews: [[{
       name: 'div',
       bindtap: 'call_0',
@@ -35,9 +47,23 @@ var pkastData = {
       },
       children: [{
         type: 'text',
-        text: '数据加载中...',
+        text: '空空如也^~^',
       }]
     }]]
+  },
+
+  notifyUnregist:function(page){
+    wx.showModal({
+      title: '您还未注册~',
+      content: '您需先注册车主信息，才能发起呼叫哦~',
+      success: function (res) {
+        if (res.confirm) {
+          wx.navigateTo({
+            url: '/pages/regist/regist?xiaoquId=' + addrList[page.data.locationIndex].id + '&wxNo=' + wxNo,
+          })
+        }
+      }
+    })
   },
 
   checkUserRegist:function(page, doIfRegistFunc){
@@ -70,17 +96,7 @@ var pkastData = {
             success: function (response) {
               if (response.data.retCode == ret_code_notreg) {
                 // 未注册
-                wx.showModal({
-                  title: '您还未注册~',
-                  content: '您需先注册车主信息，才能发起呼叫哦~',
-                  success: function (res) {
-                    if (res.confirm) {
-                      wx.navigateTo({
-                        url: '/pages/regist/regist?xiaoquId=' + addrList[page.data.locationIndex].id + '&wxNo=' + wxNo,
-                      })
-                    }
-                  }
-                })
+                pkastData.notifyUnregist(page);
               }
               else{
                 // 注册之外的回调
@@ -104,24 +120,29 @@ var pkastData = {
   },
   
   callowner: function (e) {
-    var carNumber = pkastData.data.cityCode[0][this.data.cityCodeIndex[0]] + pkastData.data.cityCode[1][this.data.cityCodeIndex[1]] + carNo;
-    console.log(carNumber);
-    if(carNumber.length < 7){
-      wx.showToast({
-        title: '车牌号有误！',
-        icon: 'none'
-      });
-      return;
-    }
+    var page = this;
+    setTimeout(function(){
+      var carNumber = pkastData.data.cityCode[0][page.data.cityCodeIndex[0]] + pkastData.data.cityCode[1][page.data.cityCodeIndex[1]] + carNo;
+      console.log(carNumber);
+      if (carNumber.length < 7) {
+        wx.showToast({
+          title: '车牌号有误！',
+          icon: 'none'
+        });
+        return;
+      }
 
-    pkastData.checkUserRegist(this,
-      function(response){
-        if (response.data.retCode == ret_code_suc){
+      pkastData.checkUserRegist(page,
+        function (response) {
+          var phoneNum = '116114';
+          if (response.data.retCode == ret_code_suc) {
+             phoneNum = response.data.data[0];
+          }
           wx.makePhoneCall({
-            phoneNumber: response.data.data[0]
+            phoneNumber: phoneNum 
           })
-        }        
-      })       
+        })
+    }, 100);
   },
 
   requestErrToast:function(){
@@ -144,16 +165,38 @@ var pkastData = {
     )    
   },
 
-  bindPickerChange: function (e) {
+  refreshbbs:function(e){
+    var selectedBbsType = pkastData.data.bbsTypeEnums[currBbsTypeIdx];
+    pkastData.getBbs(this, selectedBbsType, operatNextPage);
+  },
+
+  bindPickLocation: function (e) {
     this.setData({
       locationIndex: e.detail.value
     })
+    var selectedBbsType = pkastData.data.bbsTypeEnums[currBbsTypeIdx];
+    pkastData.getBbs(this, selectedBbsType, operatInit)
   },
   
-  bindMultiPickerChange: function (e) {
+  bindPickCarNoSuffix: function (e) {
     this.setData({
       cityCodeIndex: e.detail.value
     })
+  },
+
+  bindSelectBbsType:function(e){
+    if(currBbsTypeIdx == e.detail.value){
+      return;
+    }
+    currBbsTypeIdx = e.detail.value;
+    var selectedBbsType = pkastData.data.bbsTypeEnums[currBbsTypeIdx];
+    
+    this.setData({
+      bbsTypeIndex: e.detail.value
+    })
+
+    currBbsPageIdx = 1;
+    pkastData.getBbs(this, selectedBbsType, operatInit);
   },
 
   getLocationInfo: function (page) {
@@ -190,7 +233,9 @@ var pkastData = {
               locationIndex:0
             });
             //console.log(addrList);
-            pkastData.getBbs(page);
+            currBbsPageIdx = 1;
+            var selectedBbsType = pkastData.data.bbsTypeEnums[currBbsTypeIdx];
+            pkastData.getBbs(page, selectedBbsType, operatInit);
           }
         })
       },
@@ -211,23 +256,56 @@ var pkastData = {
     });
   },
 
-  getBbs:function(page){
+  getBbs: function (page, selectedBbsdType, operation){
+    var requestParam = {
+      pageIdx: currBbsPageIdx,
+      pageSize: 10,
+      xiaoquId: addrList[page.data.locationIndex].id
+    };
+    if(selectedBbsdType != null){
+      requestParam['type'] = selectedBbsdType;
+    }
     wx.request({
       url: domain + bbsBasePath +  '0.0.1/get-bbs',
       header: {
         'content-type': 'application/json',
       },
       method: 'GET',
-      data: {
-        pageIdx:1,
-        pageSize:10,
-        xiaoquId: addrList[pkastData.data.locationIndex].id
-      },
+      data: requestParam,
       success:function(response){
-        console.log("bbs news:"  + response.data)
-        page.setData({
-          bbsNews:response.data
-        });
+        if (response.data.length == 0){
+          if (operation == operatInit) {
+            wx.showToast({
+              title: '暂无信息发布~',
+              icon:'none'
+            })
+            page.setData({
+              bbsNews: pkastData.data.bbsNews
+            });
+          }
+          else if(operation == operatPrevPage){
+            wx.showToast({
+              title: '已翻到首页~',
+              icon:'none'
+            })
+            currBbsPageIdx = 1;
+            pkastData.getBbs(page, selectedBbsdType, operatInit);
+          }
+          else if(operation == operatNextPage){
+            wx.showToast({
+              title: '已翻到最后一页',
+              icon:'none'
+            })
+            currBbsPageIdx --;
+            pkastData.getBbs(page, selectedBbsdType, operatInit);
+          }
+        }
+        else{
+          page.setData({
+            bbsNews: response.data
+          });
+          pkastData.makeContactCallback(page);
+        }        
       },
       fail:function(response){
         pkastData.requestErrToast();
@@ -296,21 +374,73 @@ var pkastData = {
    */
   bindNumEdit: function (e) {
     carNo = e.detail.value;
-  }
-}
+  },
 
+  nextpage:function(e){
+    currBbsPageIdx ++;
+    var selectedBbsType = pkastData.data.bbsTypeEnums[currBbsTypeIdx];
+    pkastData.getBbs(this, selectedBbsType, operatNextPage);
+  },
 
-/**
- * 定义拨号绑定
- */
-for (var i = 0; i < pkastData.data.bbsNews.length; ++i) {
-  (function (phoneNum) {
-    pkastData[phoneNum] = function(e){
-      wx.makePhoneCall({
-        phoneNumber: phoneNum,
+  prepage: function(e){
+    if(currBbsPageIdx == 1){
+      wx.showToast({
+        title: '已翻到首页~',
+        icon: 'none'
       })
-    }    
-  })(pkastData.data.bbsNews[i][0].phoneNum)
+      return;
+    }
+    currBbsPageIdx --;
+    var selectedBbsType = pkastData.data.bbsTypeEnums[currBbsTypeIdx];
+    pkastData.getBbs(this, selectedBbsType, operatPrevPage);
+  },
+
+  /**
+   * 定义拨号绑定
+   */
+  makeContactCallback:function(page){    
+    for (var i = 0; i < page.data.bbsNews.length; ++i) {
+      (function (bindtap) {
+        var createrWxNo = page.data.bbsNews[i][0].creater;
+        var phoneNum = '116114';
+        page[bindtap] = function (e) {
+          wx.request({
+            url: domain + userBasePath + '0.0.1/get-phone-bywx',
+            header:{
+              'content-type': 'application/json',
+            },
+            method:'GET',
+            data:{
+              wxNo:wxNo,
+              otherWxNo:createrWxNo
+            },
+            success:function(response){
+              if (response.data.retCode == ret_code_notreg){
+                pkastData.notifyUnregist(page);
+                return;
+              }
+              else if(response.data.retCode == ret_code_fail){
+                wx.showToast({
+                  title: '用户还未注册^V^',
+                  icon:'none'
+                })
+              }
+              else if(response.data.retCode == ret_code_suc){
+                phoneNum = response.data.data[0];
+              }
+              // 拨打电话
+              wx.makePhoneCall({
+                phoneNumber: phoneNum
+              })
+            },
+            fail:function(response){
+              pkastData.requestErrToast();
+            }
+          })         
+        }
+      })(page.data.bbsNews[i][0].bindtap)
+    }
+  }
 }
 
 Page(pkastData)

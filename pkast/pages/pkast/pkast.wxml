@@ -1,6 +1,6 @@
 <view id="entry" class="flex-wrp-row margin-lr">
   <view id="user-enter" class="flex-wrp-row">
-    <picker id="num-mult-sel" class="margin-lr" mode="multiSelector" bindchange="bindMultiPickerChange" value="{{cityCodeIndex}}" range="{{cityCode}}">
+    <picker id="num-mult-sel" class="margin-lr" mode="multiSelector" bindchange="bindPickCarNoSuffix" value="{{cityCodeIndex}}" range="{{cityCode}}">
       <view class="car_no_editor">
         {{cityCode[0][cityCodeIndex[0]]}} {{cityCode[1][cityCodeIndex[1]]}}
       </view>
@@ -12,7 +12,7 @@
 
 <view class="flex-wrp-row margin-lr">
   <view class="bbs-header line"/>
-  <picker bindchange="bindPickerChange" value="{{locationIndex}}" range="{{locations}}">
+  <picker bindchange="bindPickLocation" value="{{locationIndex}}" range="{{locations}}">
     <view id="location_selector" class="shadow-text">
       {{locations[locationIndex]}}
     </view>
@@ -21,17 +21,23 @@
   <view class="bbs-header line"/>
 </view>
 
+<view id="add-bbs-container">
+  <button id="add-bbs" class="margin-lr activator-font" bindtap="addbbs" type="primary">+我要发布</button>
+  <button id="refresh-bbs" class="margin-lr activator-font" bindtap="refreshbbs" type="primary">刷新</button>
+  <view style="flex-grow:1"/>
+
+  <picker id="num-mult-sel" class="margin-lr" mode="selector" bindchange="bindSelectBbsType" value="{{bbsTypeIndex}}" range="{{bbsTypes}}">
+    <view id="select-bbs-type" class='margin-lr activator-font'>
+      {{bbsTypes[bbsTypeIndex]}}
+    </view>
+  </picker>
+
+  <button id="pre-page" class="margin-lr activator-font" bindtap="prepage" type="primary">上一页</button>
+  <button id="next-page" class="margin-lr activator-font" bindtap="nextpage" type="primary">下一页</button>  
+</view>
 <!-- bbs内容 -->
-<scroll-view id="bbs" style='display:flex;flex-direction:column'>
+<scroll-view id="bbs" scroll-y>
   <block wx:for="{{bbsNews}}" wx:key="*this">
     <rich-text nodes="{{item}}" bindtap='{{item[0].bindtap}}'/>
   </block>
 </scroll-view>
-<view id="add-bbs-container">
-<view style="flex-grow:1"/>
-  <button id="add-bbs" class="margin-lr" bindtap="addbbs" type="primary">+我要发布信息</button>
-  <view style="flex-grow:1"/>
-</view>
-<view>
-  <view class="foot margin-lr">powered by: <span style="color:#0000bb">leeboy_0333@163.com</span></view>
-</view>

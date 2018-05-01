@@ -1,5 +1,6 @@
 package com.pkast.bbs.module;
 
+import com.pkast.utils.CheckValidUtil;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -51,6 +52,22 @@ public class PublishBbsCWCZ extends PublishBbsBase {
                 .append(",价格：")
                 .append(BbsItemBuilder.EmphasizeLevel.L2, price > 0? price + "元/月": "面议")
                 .append(",欢迎垂询！")
+                .setContactWxNo(getCreater())
                 .build();
+    }
+
+    @Override
+    public CheckValidUtil.CHECK_INVALID_CODE checkValid() {
+        if(!CheckValidUtil.isValidPriceNum(price)){
+            return CheckValidUtil.CHECK_INVALID_CODE.PRICE_NUM_INVALID;
+        }
+        if(!CheckValidUtil.isValidTimeNum(period)){
+            return CheckValidUtil.CHECK_INVALID_CODE.TIME_NUM_INVALID;
+        }
+        if(!CheckValidUtil.isValidParkNo(parkNo)){
+            return CheckValidUtil.CHECK_INVALID_CODE.PARK_NUM_INVALID;
+        }
+        parkNo = parkNo.toUpperCase();
+        return CheckValidUtil.CHECK_INVALID_CODE.VALID_OK;
     }
 }

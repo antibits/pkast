@@ -4,18 +4,18 @@ import java.util.*;
 
 public class BbsItemBuilder {
 
-    private String contactPhone;
+    private String contactWxNo;
     private List<BbsItemSegment> segments = new LinkedList<>();
 
     public BbsItem build(){
         BbsItem bbsItem = new BbsItem();
         bbsItem.setChildren(segments);
-        bbsItem.setBindtap("call_" + contactPhone);
+        bbsItem.setCreater(contactWxNo);
         return bbsItem;
     }
 
-    public BbsItemBuilder setContactPhone(String contactPhone){
-        this.contactPhone = contactPhone;
+    public BbsItemBuilder setContactWxNo(String contactWxNo){
+        this.contactWxNo = contactWxNo;
         return this;
     }
 

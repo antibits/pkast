@@ -1,4 +1,4 @@
-var domain = 'http://6nq5bj.natappfree.cc'
+var domain = 'http://192.168.3.17:9527'
 var userBasePath = '/pkast.user/pkast/user/'
 var locationBasePath = '/pkast.location/pkast/location/'
 var bbsBasePath = '/pkast.bbs/pkast/bbs/'
@@ -6,6 +6,20 @@ var xiaoquId=''
 var wxNo = ''
 var selectType = 'TXNC'
 var bbsProperties = {}
+
+var err_reg_bbs_type_invalid = -2;
+var err_reg_suc = 0;
+var err_reg_car_num_invalid = 1;
+var err_reg_phone_num_invalid = 2;
+var err_reg_wx_num_invalid = 3;
+var err_reg_xiaoqu_invalid = 4;
+var err_reg_park_num_invalid = 5;
+var err_reg_price_invalid = 6;
+var err_reg_time_invalid = 7;
+var err_reg_day_invalid = 8;
+var err_reg_short_desc_invalid = 9;
+
+var errMsgs = ['发布消息有误！','','','车牌号有误！','手机号有误！','未获取微信名！','未获取位置信息！','车位号有误！','价格填写错误！','时间填写错误！','时间填写错误！','物品填写错误'];
 
 var TXNC= {
   parkNo: '',
@@ -159,36 +173,48 @@ var editbbsData = {
   },
 
   pulish:function(e){
-    // 发布信息
-    editbbsData.getBbsProperties(this)
-    wx.request({
-      url: domain + bbsBasePath + '0.0.1/add-bbs?xiaoquId='+xiaoquId,
-      header: {
-        'content-type': 'application/json',
-      },
-      method: 'POST',
-      data: {
-        type: selectType,
-        properties: bbsProperties
-      },
-      success: function (response) {
-        wx.showToast({
-          title: '发布成功',
-          icon: 'success'
-        })
-        setTimeout(function () {
-          wx.navigateBack({
-            delta: 1
+    var page = this;
+    setTimeout(function(){
+      // 发布信息
+      editbbsData.getBbsProperties(page)
+      wx.request({
+        url: domain + bbsBasePath + '0.0.1/add-bbs?xiaoquId=' + xiaoquId,
+        header: {
+          'content-type': 'application/json',
+        },
+        method: 'POST',
+        data: {
+          type: selectType,
+          properties: bbsProperties
+        },
+        success: function (response) {
+          if(response.data == err_reg_suc){
+            wx.showToast({
+              title: '发布成功',
+              icon: 'success'
+            })
+            setTimeout(function () {
+              wx.navigateBack({
+                delta: 1
+              })
+            }, 1500);
+          }
+          else{
+            var errmsg = errMsgs[response.data + 2];
+            wx.showToast({
+              title: errmsg,
+              icon: 'none'
+            })
+          }
+        },
+        fail: function (response) {
+          wx.showToast({
+            title: '差点就成功了..',
+            icon: 'none'
           })
-        }, 1500);
-      },
-      fail: function(response){
-        wx.showToast({
-          title: '差点就成功了..',
-          icon:'none'
-        })
-      }
-    })
+        }
+      })
+    }, 100)    
   }
 }
 

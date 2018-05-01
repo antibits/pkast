@@ -3,6 +3,7 @@ package com.pkast.user.business.impl;
 import com.pkast.modules.UserInfo;
 import com.pkast.user.business.itf.UserBusiness;
 import com.pkast.user.dao.UserDao;
+import com.pkast.utils.CheckValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,14 +17,22 @@ public class UserBusinessImpl implements UserBusiness {
         this.userDao = userDao;
     }
 
-    public boolean addUser(UserInfo user) {
+    public CheckValidUtil.CHECK_INVALID_CODE addUser(UserInfo user) {
+        CheckValidUtil.CHECK_INVALID_CODE validCode = CheckValidUtil.isValidUserInfo(user);
+        if(CheckValidUtil.CHECK_INVALID_CODE.VALID_OK != validCode){
+            return validCode;
+        }
         userDao.insertUser(user);
-        return true;
+        return CheckValidUtil.CHECK_INVALID_CODE.VALID_OK;
     }
 
-    public boolean editUser(UserInfo user) {
+    public CheckValidUtil.CHECK_INVALID_CODE editUser(UserInfo user) {
+        CheckValidUtil.CHECK_INVALID_CODE validCode = CheckValidUtil.isValidUserInfo(user);
+        if(CheckValidUtil.CHECK_INVALID_CODE.VALID_OK != validCode){
+            return validCode;
+        }
         userDao.updateUser(user);
-        return true;
+        return CheckValidUtil.CHECK_INVALID_CODE.VALID_OK;
     }
 
     public UserInfo getUserByCarNo(String carNo) {

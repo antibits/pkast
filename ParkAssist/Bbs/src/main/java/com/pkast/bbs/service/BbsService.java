@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.pkast.bbs.itf.BbsBusiness;
 import com.pkast.bbs.module.BbsItem;
 import com.pkast.bbs.module.PublishBbsRaw;
+import com.pkast.utils.CheckValidUtil;
 import com.pkast.version.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,8 +26,7 @@ public class BbsService {
     }
 
     @RequestMapping(method = RequestMethod.POST, path =  "add-bbs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public boolean addBbs(@RequestParam("xiaoquId") String xiaoquId, @RequestBody PublishBbsRaw bbsRaw){
-        bbsBusiness.addBbs(bbsRaw);
-        return true;
+    public int addBbs(@RequestParam("xiaoquId") String xiaoquId, @RequestBody PublishBbsRaw bbsRaw){
+        return bbsBusiness.addBbs(bbsRaw).getVal();
     }
 }

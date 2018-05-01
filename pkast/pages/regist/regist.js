@@ -1,7 +1,16 @@
-var domain = 'http://6nq5bj.natappfree.cc'
+var domain = 'http://192.168.3.17:9527'
 var userBasePath = '/pkast.user/pkast/user/'
 var locationBasePath = '/pkast.location/pkast/location/'
 var bbsBasePath = '/pkast.bbs/pkast/bbs/'
+
+var err_reg_user_invalid = -1;
+var err_reg_suc = 0;
+var err_reg_car_num_invalid = 1;
+var err_reg_phone_num_invalid = 2;
+var err_reg_wx_num_invalid = 3;
+var err_reg_xiaoqu_invalid = 4;
+
+var errMsgs = ['用户信息错误！','','车牌号填写错误！','手机号填写错误！','未获取微信名！','未获取位置信息！'];
 
 var wxNo=''
 var carNo=''
@@ -50,16 +59,25 @@ var registData={
         phoneNum:phoneNum,
         carNo:carNumber
       },
-      success:function(data){
-        wx.showToast({
-          title: '注册成功！',
-          icon: 'success'
-        })
-        setTimeout(function(){
-          wx.navigateBack({
-            delta:1
+      success:function(response){
+        if(response.data == err_reg_suc){
+          wx.showToast({
+            title: '注册成功！',
+            icon: 'success'
           })
-        }, 1500);
+          setTimeout(function () {
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 1500);
+        }
+        else {
+          var errmsg = errMsgs[response.data + 1];
+          wx.showToast({
+            title: errmsg,
+            icon: 'warn'
+          })
+        }
       }
     })
   },
@@ -68,17 +86,27 @@ var registData={
    * 注册用户
    */
   regist: function (e) {
-    var carNumber = registData.data.cityCode[0][this.data.cityCodeIndex[0]] + registData.data.cityCode[1][this.data.cityCodeIndex[1]] + carNo;
-    
-    if(carNumber.length < 7 || phoneNum.length < 10){
-      wx.showToast({
-        title: '您的信息有误',
-        icon: 'none'
-      })
-      return;
-    }
+    var page = this;
+    setTimeout(function(){
+      var carNumber = registData.data.cityCode[0][page.data.cityCodeIndex[0]] + registData.data.cityCode[1][page.data.cityCodeIndex[1]] + carNo;
 
-    registData.addUserInfo(wxNo, carNumber, phoneNum);
+      if (carNumber.length < 7) {
+        wx.showToast({
+          title: errMsgs[err_reg_car_num_invalid + 1],
+          icon: 'none'
+        })
+        return;
+      }
+      if (phoneNum.length < 7){
+        wx.showToast({
+          title: errMsgs[err_reg_phone_num_invalid + 1],
+          icon: 'none'
+        })
+        return;
+      }
+
+      registData.addUserInfo(wxNo, carNumber, phoneNum);
+    }, 100);    
   },
 
   /**

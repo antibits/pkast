@@ -1,5 +1,6 @@
 package com.pkast.bbs.module;
 
+import com.pkast.utils.CheckValidUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,8 @@ public abstract class PublishBbsBase implements Cloneable{
     protected abstract String getBbsType();
 
     public abstract BbsItem toBbsItem();
+
+    public abstract CheckValidUtil.CHECK_INVALID_CODE checkValid();
 
     private void protypeRegist(){
         PublishBbsFactory.getInstance().regist(getBbsType(), this);

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path="/pkast/user/" + Version.V_0_0_1 + "/")
 @JsonSerialize
 public class UserService{
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserBusiness userImpl;
@@ -28,13 +27,13 @@ public class UserService{
     }
 
     @RequestMapping(method = RequestMethod.POST, path =  "add-user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public boolean addUser(@RequestBody UserInfo user){
-        return userImpl.addUser(user);
+    public int addUser(@RequestBody UserInfo user){
+        return userImpl.addUser(user).getVal();
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "edit-user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public boolean editUser(@RequestBody UserInfo user){
-        return userImpl.editUser(user);
+    public int editUser(@RequestBody UserInfo user){
+        return userImpl.editUser(user).getVal();
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "get-user-bywx", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,6 +49,16 @@ public class UserService{
     @CheckUser
     public Resp<String> getUserByCarNo(@RequestParam("wxNo") String userWxNo, @RequestParam("carNo") @Nullable String carNo){
         UserInfo userInfo = userImpl.getUserByCarNo(carNo.toUpperCase());
+        if(userInfo == null){
+            return Resp.makeResp(RespRetCode.RET_FAIL);
+        }
+        return Resp.makeResp(userInfo.getPhoneNum());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "get-phone-bywx", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CheckUser
+    public Resp<String> getUserByWx(@RequestParam("wxNo") String userWxNo, @RequestParam("otherWxNo")String otherWxNo){
+        UserInfo userInfo = userImpl.getUserByWxNo(otherWxNo);
         if(userInfo == null){
             return Resp.makeResp(RespRetCode.RET_FAIL);
         }

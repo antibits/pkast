@@ -3,6 +3,7 @@ package com.pkast.location.impl;
 import com.pkast.location.dao.LocationDao;
 import com.pkast.location.itf.LocationBusiness;
 import com.pkast.modules.LocationInfo;
+import com.pkast.utils.CheckValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,9 @@ public class LocationBusinessImpl implements LocationBusiness {
 
     @Transactional
     public boolean addLocation(LocationInfo location) {
+        if(!CheckValidUtil.isValidLocationInfo(location)){
+            return false;
+        }
         LocationInfo existLocation = locationDao.getLocationById(location.getId());
         if(existLocation != null){
             location.setLocat_x_min(Math.min(location.getLocat_x_min(), existLocation.getLocat_x_min()));

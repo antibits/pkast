@@ -96,25 +96,39 @@ page {
 }
 
 #bbs{
-  border:1px #888;
-  border-style:none none solid none;
-  margin: 0.2em 1em 0.2em 1em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
   flex-grow: 1;
-  background-color: rgb(253,251,234);
+  max-height: 70%;
 }
 
 #add-bbs-container{
   flex-direction:row;
   display: flex;
+  margin: 0.2em 0em 0.2em 0em;
+}
+
+.activator-font{
+  display: inline-block;
+  text-align:center;
+  font-size:13px;
+  line-height:2.3;
+  align-content: center;  
+  padding:0 0.5em; 
+}
+
+#select-bbs-type{
+  background-color: #f8a3a7;
+  color: white;
+  border-radius:0.5em;
 }
 
 #add-bbs{
-  display: inline-block;
-  align-content: center;
-  line-height:2.3;
-  font-size:13px; 
-  padding:0 1.34em;
   background-color: #f8a3a7;
+}
+
+#refresh-bbs{
+  background-color: #576b95;
 }
 
 .foot{
@@ -122,3 +136,4 @@ page {
   color: #555;
   font: italic bold 10px/20px arial,sans-serif;
 }
+

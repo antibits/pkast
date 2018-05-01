@@ -3,6 +3,7 @@ package com.pkast.bbs.module;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pkast.utils.CheckValidUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,5 +96,10 @@ public class BbsDbModel extends PublishBbsBase{
     @Override
     public BbsItem toBbsItem(){
         throw new UnsupportBbsTypeException();
+    }
+
+    @Override
+    public CheckValidUtil.CHECK_INVALID_CODE checkValid() {
+        return CheckValidUtil.CHECK_INVALID_CODE.VALID_OK;
     }
 }

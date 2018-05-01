@@ -6,7 +6,7 @@
 
 <view class='input_laber margin-lr'><span style="color:red">*</span>您的车牌:</view>
 <view id='carnum-editor' class=" margin-lr"  style="display:flex;flex-direction:row">
-    <picker class="margin-lr" mode="multiSelector" bindchange="bindMultiPickerChange" value="{{cityCodeIndex}}" range="{{cityCode}}">
+    <picker id='num-mult-sel' class="margin-lr" mode="multiSelector" bindchange="bindMultiPickerChange" value="{{cityCodeIndex}}" range="{{cityCode}}">
       <view class="car_no_editor">
         {{cityCode[0][cityCodeIndex[0]]}} {{cityCode[1][cityCodeIndex[1]]}}
       </view>

@@ -1,11 +1,12 @@
 package com.pkast.user.business.itf;
 
 import com.pkast.modules.UserInfo;
+import com.pkast.utils.CheckValidUtil;
 
 public interface UserBusiness {
-    boolean addUser(UserInfo user);
+    CheckValidUtil.CHECK_INVALID_CODE addUser(UserInfo user);
 
-    boolean editUser(UserInfo user);
+    CheckValidUtil.CHECK_INVALID_CODE editUser(UserInfo user);
 
     UserInfo getUserByCarNo(String carNo);
 

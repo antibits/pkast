@@ -4,6 +4,7 @@ import com.pkast.bbs.dao.BbsDao;
 import com.pkast.bbs.itf.BbsBusiness;
 import com.pkast.bbs.module.*;
 import com.pkast.bbs.util.BbsDbUtil;
+import com.pkast.utils.CheckValidUtil;
 import com.pkast.utils.CollectionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,13 +21,12 @@ import java.util.stream.Collectors;
 public class BbsBusinessImpl implements BbsBusiness {
     private static final Logger LOGGER = LoggerFactory.getLogger(BbsBusinessImpl.class);
 
-    private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final int DEFAULT_PAGE_SIZE = 20;
 
     private static final int DEFAULT_PAGE_IDX = 1;
 
     @Autowired
     private BbsDao bbsDao;
-
 
     public List<List<BbsItem>> getBbs(int pageIdx, int pageSize, String xiaoquId, String bbsType) {
         String dbName = BbsDbUtil.getDbName(xiaoquId);
@@ -45,21 +45,35 @@ public class BbsBusinessImpl implements BbsBusiness {
                         .map(bbsModel -> {
                             PublishBbsBase publishBbs = PublishBbsFactory.makePublishBbs(bbsModel.getType(), bbsModel.getPropertyMap());
                             BbsItem bbsItem = publishBbs == null ? null : publishBbs.toBbsItem();
-                            return bbsItem == null ? null : Arrays.asList(bbsItem);
+                            if(bbsItem == null){
+                                return null;
+                            }
+                            bbsItem.setBindtap("call_" + publishBbs.getId());
+                            return Arrays.asList(bbsItem);
                         })
                         .filter(item -> item != null)
                         .collect(Collectors.toList());
     }
 
     @Override
-    public void addBbs(PublishBbsRaw bbsRaw) {
+    public CheckValidUtil.CHECK_INVALID_CODE addBbs(PublishBbsRaw bbsRaw) {
+        PublishBbsBase publishBbs = PublishBbsFactory.makePublishBbs(bbsRaw.getType(), bbsRaw.getProperties());
+        if(publishBbs == null){
+            return CheckValidUtil.CHECK_INVALID_CODE.BBS_TYPE_INVALID;
+        }
+        CheckValidUtil.CHECK_INVALID_CODE checkValidCode = publishBbs.checkValid();
+        if(CheckValidUtil.CHECK_INVALID_CODE.VALID_OK != checkValidCode){
+            return checkValidCode;
+        }
+
         BbsDbModel dbModule = new BbsDbModel(bbsRaw.getType(), bbsRaw.getProperties());
         String dbName = BbsDbUtil.getDbName(dbModule.getXiaoquId());
         if(StringUtils.isEmpty(dbName)){
             LOGGER.info("get no dbname .{}", dbModule.getXiaoquId());
-            return;
+            return CheckValidUtil.CHECK_INVALID_CODE.XIAOQU_ID_INVALID;
         }
         bbsDao.addBbs(dbName, dbModule);
+        return CheckValidUtil.CHECK_INVALID_CODE.VALID_OK;
     }
 
     public void delBbs(String xiaoquId, String bbsId) {

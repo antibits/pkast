@@ -4,6 +4,12 @@
   border:thin double #576b95;
 }
 
+#num-mult-sel{  
+  min-width: 2.5em;
+  align-content: center;
+  vertical-align: middle;
+}
+
 #phonenum-editor{
   padding-left: 0.2em;
   font-weight: bolder;
