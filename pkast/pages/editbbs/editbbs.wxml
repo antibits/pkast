@@ -4,15 +4,17 @@
   </label>
 </radio-group>
 
+<view class="margin-lr" style='margin-bottom:0.5em;font-size:12px;color:blue'>带 <span style='color:red'>*</span> 的项为必填项</view>
+
 <view id="TXNC" hidden='{{HIDDEN_TXNC}}'>
-  <label class='margin-tb margin-lr'>车位</label>
+  <label class='margin-tb margin-lr'>车位 <span style='color:red'>*</span></label>
   <input class='margin-tb margin-lr editor' placeholder='被占的车位编号(比如，A0324)' bindblur='edit_txnc_parkNo'></input>
-  <label class='margin-tb margin-lr'>车辆车牌</label>
+  <label class='margin-tb margin-lr'>车辆车牌 <span style='color:red'>*</span></label>
   <input class='margin-tb margin-lr editor' placeholder='占用车位的车辆号牌(比如，鄂A801234)' bindblur='edit_txnc_carNo'></input>
 </view>
 
 <view id="CWCZ" hidden='{{HIDDEN_CWCZ}}'>
-  <label class='margin-tb margin-lr'>车位</label>
+  <label class='margin-tb margin-lr'>车位 <span style='color:red'>*</span></label>
   <input class='margin-tb margin-lr editor' placeholder='您的私有车位' bindblur='edit_cwcz_parkNo'></input>
   <label class='margin-tb margin-lr'>出租时间</label>
   <input type='number' class='margin-tb margin-lr editor' placeholder='出租时长（月）' bindblur='edit_cwcz_period'></input>
@@ -22,7 +24,7 @@
 
 
 <view id="CWZR" hidden='{{HIDDEN_CWZR}}'>
-  <label class='margin-tb margin-lr'>车位</label>
+  <label class='margin-tb margin-lr'>车位 <span style='color:red'>*</span></label>
   <input class='margin-tb margin-lr editor' placeholder='您的私有车位' bindblur='edit_cwzr_parkNo'></input>
   <label class='margin-tb margin-lr'>转让价格</label>
   <input type='number' class='margin-tb margin-lr editor' placeholder='（元）' bindblur='edit_cwzr_price'></input>
@@ -30,14 +32,14 @@
 
 
 <view id="SWZL" hidden='{{HIDDEN_SWZL}}'>
-  <label class='margin-tb margin-lr'>物品</label>
+  <label class='margin-tb margin-lr'>物品 <span style='color:red'>*</span></label>
   <input class='margin-tb margin-lr editor' placeholder='拾到的物品（比如，一个钱包）' bindblur='edit_swzl_shortDesc'></input>
   <label class='margin-tb margin-lr'>拾到时间</label>
   <input type='number' class='margin-tb margin-lr editor' placeholder='几天前（不填表示今天）' bindblur='edit_swzl_dayAgo'></input>
 </view>
 
 <view id="XWQS" hidden='{{HIDDEN_XWQS}}'>
-  <label class='margin-tb margin-lr'>物品</label>
+  <label class='margin-tb margin-lr'>物品 <span style='color:red'>*</span></label>
   <input class='margin-tb margin-lr editor' placeholder='遗失的物品（比如，一个钱包）' bindblur='edit_xwqs_shortDesc'></input>
   <label class='margin-tb margin-lr'>遗失时间</label>
   <input type='number' class='margin-tb margin-lr editor' placeholder='几天前（不填表示今天）' bindblur='edit_xwqs_datAgo'></input>

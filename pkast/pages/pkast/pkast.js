@@ -1,12 +1,6 @@
-var domain = 'http://192.168.3.17:9527'
-var userBasePath = '/pkast.user/pkast/user/'
-var locationBasePath = '/pkast.location/pkast/location/'
-var bbsBasePath = '/pkast.bbs/pkast/bbs/'
-
 var operatInit = 0;
 var operatPrevPage = 1;
 var operatNextPage = 2;
-
 
 var currBbsTypeIdx = 0
 var currBbsPageIdx = 1
@@ -23,7 +17,6 @@ var wxNo=''
 var carNo = ''
 var addrList = [];
 var addressNames = [];
-
 
 var pkastData = {
   /**
@@ -67,8 +60,12 @@ var pkastData = {
   },
 
   checkUserRegist:function(page, doIfRegistFunc){
+    wx.showLoading({
+      title: '',
+      icon:'loading'
+    })
     wx.request({
-      url: domain + locationBasePath + '0.0.1/add-location',
+      url: getApp().globalData.domain + getApp().globalData.locationBasePath + '0.0.1/add-location',
       header: {
         'content-type': 'application/json',
       },
@@ -84,8 +81,12 @@ var pkastData = {
       success: function (response) {
         if (response.data == true) {
           var carNumber = page.data.cityCode[0][page.data.cityCodeIndex[0]] + page.data.cityCode[1][page.data.cityCodeIndex[1]] + carNo;
+          wx.showLoading({
+            title: '',
+            icon: 'loading'
+          })
           wx.request({
-            url: domain + userBasePath + '0.0.1/get-user-bycar',
+            url: getApp().globalData.domain + getApp().globalData.userBasePath + '0.0.1/get-user-bycar',
             header: {
               'content-type': 'application/json',
             },
@@ -106,6 +107,9 @@ var pkastData = {
             fail: function (response) {
               pkastData.requestErrToast();
             },
+            complete:function(request){
+              wx.hideLoading();
+            }
           })
         }
         else {
@@ -115,6 +119,9 @@ var pkastData = {
       },
       fail: function (response) {
         pkastData.requestErrToast();
+      },
+      complete:function(request){
+        wx.hideLoading();
       }
     })
   },
@@ -200,6 +207,10 @@ var pkastData = {
   },
 
   getLocationInfo: function (page) {
+    wx.showLoading({
+      title: '',
+      icon: 'loading'
+    })
     wx.getLocation({
       success: function (res) {
         var latitude = res.latitude
@@ -207,8 +218,7 @@ var pkastData = {
 
         var nearByParam = 'nearby(' + latitude + ',' + longitude + ',' + scope + ')';
         var mapUrl = txmapUrl + nearByParam;
-
-        console.log(nearByParam);
+        
         wx.request({
           url: mapUrl,
           success: function (res) {
@@ -244,16 +254,43 @@ var pkastData = {
           title: '位置获取失败',
           icon: 'none'
         })
+      },
+      complete:function(request){
+        wx.hideLoading();
       }
     })
   },
 
-  getWxNo:function(page){
-    wx.getUserInfo({
-      success:function(res){
-        wxNo = res.userInfo.nickName;
-      }
+  showLoginErr:function(){
+    wx.showToast({
+      title: '微信授权登录失败~',
+      icon: 'none'
     });
+    wxNo = null;
+  },
+
+  getWxNo:function(page){
+    wx.login({
+      success:function(res){
+        if(res.code){
+          var code = res.code;
+
+          wx.getUserInfo({
+            withCredentials: true,
+            success: function (res) {
+
+              wxNo = res.userInfo.nickName;
+            }
+          });
+        }
+        else{
+          pkastData.showLoginErr();
+        }    
+      },
+      fail:function(res){
+        pkastData.showLoginErr();
+      }
+    })   
   },
 
   getBbs: function (page, selectedBbsdType, operation){
@@ -265,8 +302,12 @@ var pkastData = {
     if(selectedBbsdType != null){
       requestParam['type'] = selectedBbsdType;
     }
+    wx.showLoading({
+      title: '',
+      icon: 'loading'
+    })
     wx.request({
-      url: domain + bbsBasePath +  '0.0.1/get-bbs',
+      url: getApp().globalData.domain + getApp().globalData.bbsBasePath +  '0.0.1/get-bbs',
       header: {
         'content-type': 'application/json',
       },
@@ -289,7 +330,6 @@ var pkastData = {
               icon:'none'
             })
             currBbsPageIdx = 1;
-            pkastData.getBbs(page, selectedBbsdType, operatInit);
           }
           else if(operation == operatNextPage){
             wx.showToast({
@@ -297,7 +337,6 @@ var pkastData = {
               icon:'none'
             })
             currBbsPageIdx --;
-            pkastData.getBbs(page, selectedBbsdType, operatInit);
           }
         }
         else{
@@ -309,6 +348,9 @@ var pkastData = {
       },
       fail:function(response){
         pkastData.requestErrToast();
+      },
+      complete:function(request){
+        wx.hideLoading();
       }
     })
   },
@@ -404,8 +446,12 @@ var pkastData = {
         var createrWxNo = page.data.bbsNews[i][0].creater;
         var phoneNum = '116114';
         page[bindtap] = function (e) {
+          wx.showLoading({
+            title: '',
+            icon: 'loading'
+          })
           wx.request({
-            url: domain + userBasePath + '0.0.1/get-phone-bywx',
+            url: getApp().globalData.domain + getApp().globalData.userBasePath + '0.0.1/get-phone-bywx',
             header:{
               'content-type': 'application/json',
             },
@@ -435,6 +481,9 @@ var pkastData = {
             },
             fail:function(response){
               pkastData.requestErrToast();
+            },
+            complete:function(request){
+              wx.hideLoading();
             }
           })         
         }

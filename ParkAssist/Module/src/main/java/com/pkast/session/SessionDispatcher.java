@@ -14,31 +14,16 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class SessionDispatcher extends DispatcherServlet {
-    public static final String SESS_ID_NAME = "JSESSIONID";
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionDispatcher.class);
 
     @Override
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
         DBNameUtil.setDbName(null);
-        Optional<Cookie> session = request.getCookies() == null ? null:
-                Stream.of(request.getCookies()).filter(cookie ->SESS_ID_NAME.equals(cookie.getName())).findAny();
-        String sessionId = null;
-        if(session != null && session.isPresent()){
-            sessionId = session.get().getValue();
-        }
-        else{
-            HttpSession sess = request.getSession();
-            sessionId = sess.getId();
-        }
-        SessionThreadLocal.setSessionId(sessionId);
         try {
             super.doService(request, response);
         }catch (Throwable e){
             LOGGER.error("do service error.", e);
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        }
-        finally {
-            SessionThreadLocal.clearSessionId();
         }
     }
 }

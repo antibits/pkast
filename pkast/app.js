@@ -34,6 +34,10 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    domain:'http://192.168.3.17:9527',
+    userBasePath:'/pkast.user/pkast/user/',
+    locationBasePath:'/pkast.location/pkast/location/',
+    bbsBasePath:'/pkast.bbs/pkast/bbs/'
   }
 })

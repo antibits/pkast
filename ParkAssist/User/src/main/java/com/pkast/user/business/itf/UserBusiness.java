@@ -1,6 +1,7 @@
 package com.pkast.user.business.itf;
 
 import com.pkast.modules.UserInfo;
+import com.pkast.user.model.EncryUserInfo;
 import com.pkast.utils.CheckValidUtil;
 
 public interface UserBusiness {
@@ -11,4 +12,6 @@ public interface UserBusiness {
     UserInfo getUserByCarNo(String carNo);
 
     UserInfo getUserByWxNo(String userWxNo);
+
+    String requestUserWxNo(EncryUserInfo encryUserInfo);
 }

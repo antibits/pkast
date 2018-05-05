@@ -1,21 +1,17 @@
 package com.pkast.utils;
 
-import com.pkast.session.SessionDispatcher;
-import com.pkast.session.SessionThreadLocal;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.Map;
 
 public class RestUtil {
@@ -60,7 +56,12 @@ public class RestUtil {
      * @return
      */
     public static <T> T get(String url, Map<String, String> urlParams, Class<T> respType) {
-        return get(url, urlParams, null, new ParameterizedTypeReference<T>() {});
+        return get(url, urlParams, null, new ParameterizedTypeReference<T>() {
+            @Override
+            public Type getType() {
+                return respType;
+            }
+        });
     }
 
     /**
@@ -85,7 +86,12 @@ public class RestUtil {
      * @return
      */
     public static <T> T get(String url, Map<String, String> urlParams, MultiValueMap<String, String> headParams, Class<T> respType) {
-        return get(url, urlParams, headParams, new ParameterizedTypeReference<T>() {});
+        return get(url, urlParams, headParams, new ParameterizedTypeReference<T>() {
+            @Override
+            public Type getType() {
+                return respType;
+            }
+        });
     }
 
     public static <T> T get(String url, Map<String, String> urlParams, MultiValueMap<String, String> headParams, ParameterizedTypeReference<T> respTypeParam){
@@ -105,7 +111,12 @@ public class RestUtil {
      * @return
      */
     public static <P, T> T post(String url, P bodyParam, Class<T> respType) {
-        return post(url, bodyParam, new ParameterizedTypeReference<T>(){});
+        return post(url, bodyParam, new ParameterizedTypeReference<T>(){
+            @Override
+            public Type getType() {
+                return respType;
+            }
+        });
     }
 
     public static <P, T> T post(String url, P bodyParam, ParameterizedTypeReference<T> respTypeParam) {
@@ -123,7 +134,12 @@ public class RestUtil {
      * @return
      */
     public static <P,T> T post(String url, Map<String, String> urlParams, P bodyParam, Class<T> respType){
-        return post(url, urlParams, bodyParam, new ParameterizedTypeReference<T>(){});
+        return post(url, urlParams, bodyParam, new ParameterizedTypeReference<T>(){
+            @Override
+            public Type getType() {
+                return respType;
+            }
+        });
     }
 
     public static <P,T> T post(String url, Map<String, String> urlParams, P bodyParam, ParameterizedTypeReference<T> respTypeParam){
@@ -142,7 +158,12 @@ public class RestUtil {
      * @return
      */
     public static <P, T> T post(String url, Map<String, String> urlParams, MultiValueMap<String, String> headParams, P bodyParam, Class<T> respType){
-        return post(url, urlParams, headParams, bodyParam, new ParameterizedTypeReference<T>() {});
+        return post(url, urlParams, headParams, bodyParam, new ParameterizedTypeReference<T>() {
+            @Override
+            public Type getType() {
+                return respType;
+            }
+        });
     }
 
     public static <P, T> T post(String url, Map<String, String> urlParams, MultiValueMap<String, String> headParams, P bodyParam, ParameterizedTypeReference<T> respTypeParam){
@@ -161,7 +182,6 @@ public class RestUtil {
         }
         // Content-Type字段设置为application/json;
         headParams.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        headParams.add(HttpHeaders.COOKIE, SessionDispatcher.SESS_ID_NAME + "=" + SessionThreadLocal.getSessionId());
         return headParams;
     }
 

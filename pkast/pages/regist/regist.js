@@ -1,8 +1,3 @@
-var domain = 'http://192.168.3.17:9527'
-var userBasePath = '/pkast.user/pkast/user/'
-var locationBasePath = '/pkast.location/pkast/location/'
-var bbsBasePath = '/pkast.bbs/pkast/bbs/'
-
 var err_reg_user_invalid = -1;
 var err_reg_suc = 0;
 var err_reg_car_num_invalid = 1;
@@ -45,10 +40,12 @@ var registData={
   },
 
   addUserInfo: function (wxNo, carNumber, phoneNum) {
-    console.log(wxNo, carNumber, phoneNum);
-    
+    wx.showLoading({
+      title: '',
+      icon: 'loading'
+    })
     wx.request({
-      url: domain + userBasePath + '0.0.1/add-user',
+      url: getApp().globalData.domain + getApp().globalData.userBasePath + '0.0.1/add-user',
       header: {
         'content-type': 'application/json',
       },
@@ -78,6 +75,15 @@ var registData={
             icon: 'warn'
           })
         }
+      },
+      fail:function(response){
+        wx.showToast({
+          title: '请检查网络~',
+          icon: 'none'
+        })
+      },
+      complete:function(request){
+        wx.hideLoading();
       }
     })
   },

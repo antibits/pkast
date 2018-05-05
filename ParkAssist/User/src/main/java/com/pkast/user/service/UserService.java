@@ -5,6 +5,7 @@ import com.pkast.modules.Resp;
 import com.pkast.modules.RespRetCode;
 import com.pkast.modules.UserInfo;
 import com.pkast.user.business.itf.UserBusiness;
+import com.pkast.user.model.EncryUserInfo;
 import com.pkast.utils.CheckUser;
 import com.pkast.version.Version;
 import org.slf4j.Logger;
@@ -63,5 +64,14 @@ public class UserService{
             return Resp.makeResp(RespRetCode.RET_FAIL);
         }
         return Resp.makeResp(userInfo.getPhoneNum());
+    }
+
+    /**
+     * 使用login返回的js_code和userInfo中的用户encryptedData和iv数据，解密获取用户uniqId
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "get-user-id", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Resp<String> requestUserWxNo(@RequestBody EncryUserInfo encryUserInfo){
+        String userUniqId = userImpl.requestUserWxNo(encryUserInfo);
+        return Resp.makeResp(userUniqId);
     }
 }

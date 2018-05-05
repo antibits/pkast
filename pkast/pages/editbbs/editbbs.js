@@ -1,7 +1,3 @@
-var domain = 'http://192.168.3.17:9527'
-var userBasePath = '/pkast.user/pkast/user/'
-var locationBasePath = '/pkast.location/pkast/location/'
-var bbsBasePath = '/pkast.bbs/pkast/bbs/'
 var xiaoquId=''
 var wxNo = ''
 var selectType = 'TXNC'
@@ -177,8 +173,12 @@ var editbbsData = {
     setTimeout(function(){
       // 发布信息
       editbbsData.getBbsProperties(page)
+      wx.showLoading({
+        title: '',
+        icon: 'loading'
+      })
       wx.request({
-        url: domain + bbsBasePath + '0.0.1/add-bbs?xiaoquId=' + xiaoquId,
+        url: getApp().globalData.domain + getApp().globalData.bbsBasePath + '0.0.1/add-bbs?xiaoquId=' + xiaoquId,
         header: {
           'content-type': 'application/json',
         },
@@ -212,6 +212,9 @@ var editbbsData = {
             title: '差点就成功了..',
             icon: 'none'
           })
+        },
+        complete:function(request){
+          wx.hideLoading();
         }
       })
     }, 100)    
