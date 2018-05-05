@@ -278,8 +278,42 @@ var pkastData = {
           wx.getUserInfo({
             withCredentials: true,
             success: function (res) {
-
-              wxNo = res.userInfo.nickName;
+              // 使用wx登录接口获取用户unionId
+              wx.showLoading({
+                title: '',
+                icon:'loading'
+              })
+              wx.request({
+                url: getApp().globalData.domain + getApp().globalData.userBasePath + '0.0.1/get-user-id',
+                method:'GET',
+                header:{
+                  'content-type': 'application/json',
+                },
+                data:{
+                  code:code,
+                  encryptedData:res.encryptedData,
+                  iv:res.iv,
+                  signature:res.signature,
+                  userRawData:res.rawData
+                },
+                success:res=>{
+                  if(res.data.data[0] == null){
+                    pkastData.showLoginErr();
+                  }
+                  else{
+                    wxNo = res.data.data[0];
+                  }
+                },
+                fail:res=>{
+                  pkastData.showLoginErr();
+                },
+                complete:req=>{
+                  wx.hideLoading();
+                }
+              })
+            },
+            fail: res=>{
+              pkastData.showLoginErr();
             }
           });
         }

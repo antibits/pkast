@@ -41,7 +41,7 @@ public class UserBusinessImpl implements UserBusiness {
 
     public CheckValidUtil.CHECK_INVALID_CODE addUser(UserInfo user) {
         CheckValidUtil.CHECK_INVALID_CODE validCode = CheckValidUtil.isValidUserInfo(user);
-        if(CheckValidUtil.CHECK_INVALID_CODE.VALID_OK != validCode){
+        if (CheckValidUtil.CHECK_INVALID_CODE.VALID_OK != validCode) {
             return validCode;
         }
         userDao.insertUser(user);
@@ -50,7 +50,7 @@ public class UserBusinessImpl implements UserBusiness {
 
     public CheckValidUtil.CHECK_INVALID_CODE editUser(UserInfo user) {
         CheckValidUtil.CHECK_INVALID_CODE validCode = CheckValidUtil.isValidUserInfo(user);
-        if(CheckValidUtil.CHECK_INVALID_CODE.VALID_OK != validCode){
+        if (CheckValidUtil.CHECK_INVALID_CODE.VALID_OK != validCode) {
             return validCode;
         }
         userDao.updateUser(user);
@@ -58,7 +58,7 @@ public class UserBusinessImpl implements UserBusiness {
     }
 
     public UserInfo getUserByCarNo(String carNo) {
-        if(!CheckValidUtil.isValidCarNum(carNo)){
+        if (!CheckValidUtil.isValidCarNum(carNo)) {
             return null;
         }
         return userDao.getUserByCarNo(carNo);
@@ -70,7 +70,7 @@ public class UserBusinessImpl implements UserBusiness {
 
     @Override
     public String requestUserWxNo(EncryUserInfo encryUserInfo) {
-        if(StringUtils.isBlank(encryUserInfo.getCode())){
+        if (StringUtils.isBlank(encryUserInfo.getCode())) {
             LOGGER.info("encry user info code empty");
             return null;
         }
@@ -81,29 +81,30 @@ public class UserBusinessImpl implements UserBusiness {
         sessKeyParams.put("js_code", encryUserInfo.getCode());
         sessKeyParams.put("grant_type", "authorization_code");
         WxSessionInfo wxSessInfo = RestUtil.get("https://api.weixin.qq.com/sns/jscode2session", sessKeyParams, WxSessionInfo.class);
-        if(wxSessInfo != null && StringUtils.isNoneBlank(wxSessInfo.getUnionid())){
+        if (wxSessInfo != null && StringUtils.isNoneBlank(wxSessInfo.getUnionid())) {
             return wxSessInfo.getUnionid();
         }
-        if(wxSessInfo == null || StringUtils.isBlank(wxSessInfo.getSession_key())){
+        if (wxSessInfo == null || StringUtils.isBlank(wxSessInfo.getSession_key())) {
             LOGGER.error("get wx session info err.");
             return null;
         }
 
         String shaSign = Sha1Encrypter.encode(encryUserInfo.getUserRawData() + wxSessInfo.getSession_key());
         // sha1 摘要签名算法验证，无篡改
-        if(StringUtils.isNoneEmpty(encryUserInfo.getSignature()) && encryUserInfo.getSignature().equals(shaSign)){
+        if (StringUtils.isNoneEmpty(encryUserInfo.getSignature()) && encryUserInfo.getSignature().equals(shaSign)) {
             // 解密数据，提取用户
             AesCbcEecrypter aesCbcEncrypt = AesCbcEecrypter.initAsDecrypt(wxSessInfo.getSession_key(), encryUserInfo.getIv());
+            if (aesCbcEncrypt == null) {
+                return null;
+            }
             String userDataJson = aesCbcEncrypt.decrypt(encryUserInfo.getEncryptedData());
-
             try {
-                DecryptUserData decryptUserData = new ObjectMapper().readValue(userDataJson, DecryptUserData.class);
-                return decryptUserData.getUnionId();
+                DecryptUserData decryptUserData = userDataJson == null ? null : new ObjectMapper().readValue(userDataJson, DecryptUserData.class);
+                return decryptUserData == null ? null : decryptUserData.getUnionId();
             } catch (IOException e) {
                 LOGGER.error("parse josn error.", e);
             }
-        }
-        else{
+        } else {
             LOGGER.error("signature not match!");
         }
         return null;
