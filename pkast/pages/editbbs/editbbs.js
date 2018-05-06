@@ -174,7 +174,7 @@ var editbbsData = {
       // 发布信息
       editbbsData.getBbsProperties(page)
       wx.showLoading({
-        title: '',
+        title: '加载中',
         icon: 'loading'
       })
       wx.request({

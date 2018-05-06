@@ -41,7 +41,7 @@ var registData={
 
   addUserInfo: function (wxNo, carNumber, phoneNum) {
     wx.showLoading({
-      title: '',
+      title: '加载中',
       icon: 'loading'
     })
     wx.request({

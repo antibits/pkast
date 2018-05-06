@@ -68,7 +68,7 @@ var pkastData = {
       return;
     }
     wx.showLoading({
-      title: '',
+      title: '加载中',
       icon:'loading'
     })
     wx.request({
@@ -89,7 +89,7 @@ var pkastData = {
         if (response.data == true) {
           var carNumber = page.data.cityCode[0][page.data.cityCodeIndex[0]] + page.data.cityCode[1][page.data.cityCodeIndex[1]] + carNo;
           wx.showLoading({
-            title: '',
+            title: '加载中',
             icon: 'loading'
           })
           wx.request({
@@ -181,7 +181,7 @@ var pkastData = {
 
   refreshbbs:function(e){
     var selectedBbsType = pkastData.data.bbsTypeEnums[currBbsTypeIdx];
-    pkastData.getBbs(this, selectedBbsType, operatNextPage);
+    pkastData.getBbs(this, selectedBbsType, operatInit);
   },
 
   bindPickLocation: function (e) {
@@ -215,7 +215,7 @@ var pkastData = {
 
   getLocationInfo: function (page) {
     wx.showLoading({
-      title: '',
+      title: '加载中',
       icon: 'loading'
     })
     wx.getLocation({
@@ -287,7 +287,7 @@ var pkastData = {
             success: function (res) {
               // 使用wx登录接口获取用户unionId
               wx.showLoading({
-                title: '',
+                title: '加载中',
                 icon:'loading'
               })
               /*
@@ -361,10 +361,12 @@ var pkastData = {
     if(selectedBbsdType != null){
       requestParam['type'] = selectedBbsdType;
     }
-    wx.showLoading({
-      title: '',
-      icon: 'loading'
-    })
+    if (operation == operatInit){
+      wx.showLoading({
+        title: '加载中',
+        icon: 'loading'
+      })
+    }    
     wx.request({
       url: getApp().globalData.domain + getApp().globalData.bbsBasePath +  '0.0.1/get-bbs',
       header: {
@@ -385,7 +387,7 @@ var pkastData = {
           }
           else if(operation == operatPrevPage){
             wx.showToast({
-              title: '已翻到首页~',
+              title: '已翻到首页',
               icon:'none'
             })
             currBbsPageIdx = 1;
@@ -409,7 +411,9 @@ var pkastData = {
         pkastData.requestErrToast();
       },
       complete:function(request){
-        wx.hideLoading();
+        if (operation == operatInit) {
+          wx.hideLoading();
+        }
       }
     })
   },
@@ -486,7 +490,7 @@ var pkastData = {
   prepage: function(e){
     if(currBbsPageIdx == 1){
       wx.showToast({
-        title: '已翻到首页~',
+        title: '已翻到首页',
         icon: 'none'
       })
       return;
@@ -513,7 +517,7 @@ var pkastData = {
             return;
           }
           wx.showLoading({
-            title: '',
+            title: '加载中',
             icon: 'loading'
           })
           wx.request({
