@@ -32,6 +32,7 @@
                 <value>application/json;charset=UTF-8</value>
                 <!-- 避免IE出现下载JSON文件的情况 -->
                 <value>text/html;charset=UTF-8</value>
+                <value>text/plain;charset=UTF-8</value>
             </list>
         </property>
         <property name="features">

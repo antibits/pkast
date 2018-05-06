@@ -1,7 +1,6 @@
 package com.pkast.user.business.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.pkast.modules.UserInfo;
 import com.pkast.user.business.itf.UserBusiness;
 import com.pkast.user.dao.UserDao;
@@ -16,24 +15,40 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 @Component
 public class UserBusinessImpl implements UserBusiness {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserBusinessImpl.class);
 
-    private static final String APP_ID = "wx529e213ed2be0fe4";
+    private static final String APP_KEY_CONF = "wx_app_conf.properties";
 
-    private static final String APP_SECRET_KEY = "";
+    private static String appId = "" ;
+
+    /**
+     * 这一行千万不能提交到github
+     */
+    private static String appSecretKey = "";
 
     @Autowired
     private UserDao userDao;
+
+    static {
+        Properties appConfigProps = new Properties();
+        try {
+            appConfigProps.load(UserBusinessImpl.class.getClassLoader().getResourceAsStream(APP_KEY_CONF));
+            appId = appConfigProps.getProperty("app.id");
+            appSecretKey = appConfigProps.getProperty("app.secret.key");
+        } catch (IOException e) {
+            LOGGER.error("load app key conf error.", e);
+        }
+    }
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
@@ -76,8 +91,8 @@ public class UserBusinessImpl implements UserBusiness {
         }
         // 先使用code交换
         Map<String, String> sessKeyParams = new HashMap<String, String>();
-        sessKeyParams.put("appid", APP_ID);
-        sessKeyParams.put("secret", APP_SECRET_KEY);
+        sessKeyParams.put("appid", appId);
+        sessKeyParams.put("secret", appSecretKey);
         sessKeyParams.put("js_code", encryUserInfo.getCode());
         sessKeyParams.put("grant_type", "authorization_code");
         WxSessionInfo wxSessInfo = RestUtil.get("https://api.weixin.qq.com/sns/jscode2session", sessKeyParams, WxSessionInfo.class);

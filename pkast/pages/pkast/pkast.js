@@ -60,6 +60,13 @@ var pkastData = {
   },
 
   checkUserRegist:function(page, doIfRegistFunc){
+    if (wxNo == ''){
+      wx.showToast({
+        title: '临时用户只能看帖哦~',
+        icon:'none'
+      })
+      return;
+    }
     wx.showLoading({
       title: '',
       icon:'loading'
@@ -266,7 +273,7 @@ var pkastData = {
       title: '微信授权登录失败~',
       icon: 'none'
     });
-    wxNo = null;
+    wxNo = '';
   },
 
   getWxNo:function(page){
@@ -274,7 +281,7 @@ var pkastData = {
       success:function(res){
         if(res.code){
           var code = res.code;
-
+          console.log(code);
           wx.getUserInfo({
             withCredentials: true,
             success: function (res) {
@@ -283,9 +290,27 @@ var pkastData = {
                 title: '',
                 icon:'loading'
               })
+              /*
+              wx.request({
+                url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx529e213ed2be0fe4&secret=79724f5625967bf773b4346f2a6a5cc6&js_code=' + code + '&grant_type=authorization_code',
+                data: {},
+                header: {
+                  'content-type': 'json'
+                },
+                success: function (res) {
+                  console.log('res为' + res.data);
+                  var openid = res.data.openid //返回openid
+                  console.log('openid为' + openid);
+                },
+                complete:req=>{
+                  wx.hideLoading();
+                }
+              })
+              */
+              
               wx.request({
                 url: getApp().globalData.domain + getApp().globalData.userBasePath + '0.0.1/get-user-id',
-                method:'GET',
+                method:'POST',
                 header:{
                   'content-type': 'application/json',
                 },
@@ -297,11 +322,11 @@ var pkastData = {
                   userRawData:res.rawData
                 },
                 success:res=>{
-                  if(res.data.data[0] == null){
-                    pkastData.showLoginErr();
+                  if (res.data.retCode == ret_code_suc){
+                    wxNo = res.data.data[0];                    
                   }
                   else{
-                    wxNo = res.data.data[0];
+                    pkastData.showLoginErr();
                   }
                 },
                 fail:res=>{
@@ -310,7 +335,7 @@ var pkastData = {
                 complete:req=>{
                   wx.hideLoading();
                 }
-              })
+              })              
             },
             fail: res=>{
               pkastData.showLoginErr();
@@ -478,8 +503,15 @@ var pkastData = {
     for (var i = 0; i < page.data.bbsNews.length; ++i) {
       (function (bindtap) {
         var createrWxNo = page.data.bbsNews[i][0].creater;
-        var phoneNum = '116114';
+        var phoneNum = '';
         page[bindtap] = function (e) {
+          if(wxNo == ''){
+            wx.showToast({
+              title: '临时用户只能看帖哦~',
+              icon:'none'
+            })
+            return;
+          }
           wx.showLoading({
             title: '',
             icon: 'loading'
@@ -508,6 +540,7 @@ var pkastData = {
               else if(response.data.retCode == ret_code_suc){
                 phoneNum = response.data.data[0];
               }
+              
               // 拨打电话
               wx.makePhoneCall({
                 phoneNumber: phoneNum

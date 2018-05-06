@@ -8,6 +8,7 @@ import com.pkast.user.business.itf.UserBusiness;
 import com.pkast.user.model.EncryUserInfo;
 import com.pkast.utils.CheckUser;
 import com.pkast.version.Version;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,9 +70,12 @@ public class UserService{
     /**
      * 使用login返回的js_code和userInfo中的用户encryptedData和iv数据，解密获取用户uniqId
      */
-    @RequestMapping(method = RequestMethod.GET, path = "get-user-id", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, path = "get-user-id", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Resp<String> requestUserWxNo(@RequestBody EncryUserInfo encryUserInfo){
         String userUniqId = userImpl.requestUserWxNo(encryUserInfo);
+        if(StringUtils.isEmpty(userUniqId)){
+            return Resp.makeResp(RespRetCode.RET_FAIL);
+        }
         return Resp.makeResp(userUniqId);
     }
 }
